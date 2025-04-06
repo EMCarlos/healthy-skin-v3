@@ -120,4 +120,4 @@ This project is proprietary software owned by Healthy Skin. All rights reserved.
 
 ## Contact
 
-Project Link: [https://github.com/yourusername/healthy-skin-v3](https://github.com/yourusername/healthy-skin-v3)
+Project Link: [https://github.com/EMCarlos/healthy-skin-v3](https://github.com/EMCarlos/healthy-skin-v3)
