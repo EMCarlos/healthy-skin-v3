@@ -1,28 +1,24 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
-
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from base.models import Product, Review
 from base.serializers import ProductSerializer
 
-from rest_framework import status
-
 
 @api_view(['GET'])
 def getProducts(request):
-    query = request.query_params.get('keyword')
-    if query == None:
-        query = ''
-
+    query = request.query_params.get('keyword', '')
+    
     products = Product.objects.filter(
         Q(name__icontains=query) |
         Q(category__icontains=query) |
         Q(brand__icontains=query)).order_by('-createdAt')
 
-    page = request.query_params.get('page')
+    page = request.query_params.get('page', 1)
     paginator = Paginator(products, 6)
 
     try:
@@ -32,11 +28,8 @@ def getProducts(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
-    if page == None:
-        page = 1
-
     page = int(page)
-    print('Page:', page)
+    
     serializer = ProductSerializer(products, many=True)
     return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
@@ -50,9 +43,14 @@ def getTopProducts(request):
 
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = Product.objects.get(_id=pk)
-    serializer = ProductSerializer(product, many=False)
-    return Response(serializer.data)
+    try:
+        product = Product.objects.get(_id=pk)
+        serializer = ProductSerializer(product, many=False)
+        return Response(serializer.data)
+    except Product.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error retrieving product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -80,82 +78,101 @@ def createProduct(request):
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
-    data = request.data
-    product = Product.objects.get(_id=pk)
+    try:
+        data = request.data
+        product = Product.objects.get(_id=pk)
 
-    product.name = data['name']
-    product.price = data['price']
-    product.brand = data['brand']
-    product.discount = data['discount']
-    product.about = data['about']
-    product.size = data['size']
-    product.countInStock = data['countInStock']
-    product.category = data['category']
-    product.description = data['description']
+        product.name = data['name']
+        product.price = data['price']
+        product.brand = data['brand']
+        product.discount = data['discount']
+        product.about = data['about']
+        product.size = data['size']
+        product.countInStock = data['countInStock']
+        product.category = data['category']
+        product.description = data['description']
 
-    product.save()
+        product.save()
 
-    serializer = ProductSerializer(product, many=False)
-    return Response(serializer.data)
+        serializer = ProductSerializer(product, many=False)
+        return Response(serializer.data)
+    except Product.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error updating product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def deleteProduct(request, pk):
-    product = Product.objects.get(_id=pk)
-    product.delete()
-    return Response('Producted Deleted')
+    try:
+        product = Product.objects.get(_id=pk)
+        product.delete()
+        return Response({'detail': 'Product deleted successfully'})
+    except Product.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error deleting product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 def uploadImage(request):
-    data = request.data
+    try:
+        data = request.data
+        product_id = data['product_id']
+        product = Product.objects.get(_id=product_id)
 
-    product_id = data['product_id']
-    product = Product.objects.get(_id=product_id)
+        product.image = request.FILES.get('image')
+        product.save()
 
-    product.image = request.FILES.get('image')
-    product.save()
-
-    return Response('Image was uploaded')
+        return Response({'detail': 'Image was uploaded successfully'})
+    except Product.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error uploading image: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createProductReview(request, pk):
     user = request.user
-    product = Product.objects.get(_id=pk)
-    data = request.data
+    try:
+        product = Product.objects.get(_id=pk)
+        data = request.data
 
-    # 1 - Review already exists
-    alreadyExists = product.review_set.filter(user=user).exists()
-    if alreadyExists:
-        content = {'detail': 'Product already reviewed'}
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        # 1 - Review already exists
+        alreadyExists = product.review_set.filter(user=user).exists()
+        if alreadyExists:
+            content = {'detail': 'Product already reviewed'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    # 2 - No Rating or 0
-    elif data['rating'] == 0:
-        content = {'detail': 'Please select a rating'}
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        # 2 - No Rating or 0
+        elif data['rating'] == 0:
+            content = {'detail': 'Please select a rating'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    # 3 - Create review
-    else:
-        review = Review.objects.create(
-            user=user,
-            product=product,
-            name=user.first_name,
-            rating=data['rating'],
-            comment=data['comment'],
-        )
+        # 3 - Create review
+        else:
+            review = Review.objects.create(
+                user=user,
+                product=product,
+                name=user.first_name,
+                rating=data['rating'],
+                comment=data['comment'],
+            )
 
-        reviews = product.review_set.all()
-        product.numReviews = len(reviews)
+            reviews = product.review_set.all()
+            product.numReviews = len(reviews)
 
-        total = 0
-        for i in reviews:
-            total += i.rating
+            total = 0
+            for i in reviews:
+                total += i.rating
 
-        product.rating = total / len(reviews)
-        product.save()
+            product.rating = total / len(reviews)
+            product.save()
 
-        return Response('Review Added')
+            return Response({'detail': 'Review added successfully'})
+    except Product.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)

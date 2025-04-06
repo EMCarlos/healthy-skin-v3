@@ -41,7 +41,27 @@ class SupabaseStorage(Storage):
     def exists(self, name):
         try:
             # Try to get the file metadata
-            self.supabase.storage.from_(this.bucket_name).get_public_url(name)
+            self.supabase.storage.from_(self.bucket_name).get_public_url(name)
             return True
-        except:
-            return False 
+        except Exception:
+            return False
+
+    def get_accessed_time(self, name):
+        # Supabase doesn't provide file access times, so we use the current time
+        from django.utils import timezone
+        return timezone.now()
+
+    def get_created_time(self, name):
+        # Supabase doesn't provide file creation times, so we use the current time
+        from django.utils import timezone
+        return timezone.now()
+
+    def get_modified_time(self, name):
+        # Supabase doesn't provide file modification times, so we use the current time
+        from django.utils import timezone
+        return timezone.now()
+
+    def size(self, name):
+        # Supabase doesn't provide a direct way to get file size
+        # Returning default size for now
+        return 0 

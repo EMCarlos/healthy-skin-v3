@@ -1,16 +1,13 @@
-from django.utils import timezone
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.utils import timezone
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import ProductSerializer, OrderSerializer
-
-from rest_framework import status
-import datetime
+from base.models import Order, OrderItem, Product, ShippingAddress
+from base.serializers import OrderSerializer, ProductSerializer
 
 
 @api_view(['POST'])
@@ -50,7 +47,7 @@ def addOrderItems(request):
             country=data['shippingAddress']['country'],
         )
 
-        # (3) Create order items adn set order to orderItem relationship
+        # (3) Create order items and set order to orderItem relationship
         for i in orderItems:
             product = Product.objects.get(_id=i['product'])
 
@@ -92,7 +89,6 @@ def getOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
-
     user = request.user
 
     try:
@@ -101,10 +97,12 @@ def getOrderById(request, pk):
             serializer = OrderSerializer(order, many=False)
             return Response(serializer.data)
         else:
-            Response({'detail': 'Not authorized to view this order'},
+            return Response({'detail': 'Not authorized to view this order'},
                      status=status.HTTP_400_BAD_REQUEST)
-    except:
-        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+    except Order.DoesNotExist:
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'detail': f'Error retrieving order: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
@@ -113,7 +111,7 @@ def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isPaid = True
-    order.paidAt = datetime.datetime.now(tz=timezone.utc)
+    order.paidAt = timezone.now()
     order.save()
 
     return Response('Order was paid')
@@ -125,7 +123,7 @@ def updateOrderToDelivered(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isDelivered = True
-    order.deliveredAt = datetime.datetime.now(tz=timezone.utc)
+    order.deliveredAt = timezone.now()
     order.save()
 
     return Response('Order was delivered')
