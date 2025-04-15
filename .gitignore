@@ -80,3 +80,34 @@ coverage.xml
 .env.production.local 
 yarn.lock
 package-lock.json
+
+# Dependencies
+node_modules/
+yarn.lock
+package-lock.json
+
+# Build output
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
