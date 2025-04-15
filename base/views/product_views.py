@@ -1,5 +1,6 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -11,15 +12,15 @@ from base.serializers import ProductSerializer
 
 @api_view(['GET'])
 def getProducts(request):
-    query = request.query_params.get('keyword', '')
-    
-    products = Product.objects.filter(
-        Q(name__icontains=query) |
-        Q(category__icontains=query) |
-        Q(brand__icontains=query)).order_by('-createdAt')
+    query = request.query_params.get('keyword')
+    if query == None:
+        query = ''
 
-    page = request.query_params.get('page', 1)
-    paginator = Paginator(products, 6)
+    products = Product.objects.filter(
+        name__icontains=query).order_by('-createdAt')
+
+    page = request.query_params.get('page')
+    paginator = Paginator(products, 5)
 
     try:
         products = paginator.page(page)
@@ -28,8 +29,11 @@ def getProducts(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    if page == None:
+        page = 1
+
     page = int(page)
-    
+    print('Page:', page)
     serializer = ProductSerializer(products, many=True)
     return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
@@ -68,7 +72,7 @@ def createProduct(request):
         brand='Sample Brand',
         countInStock=0,
         category='Sample Category',
-        description='',
+        description=''
     )
 
     serializer = ProductSerializer(product, many=False)
@@ -93,9 +97,9 @@ def updateProduct(request, pk):
         product.description = data['description']
 
         product.save()
-
         serializer = ProductSerializer(product, many=False)
         return Response(serializer.data)
+     
     except Product.DoesNotExist:
         return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:

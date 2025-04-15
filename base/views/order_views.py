@@ -1,6 +1,6 @@
-from django.core.mail import BadHeaderError, send_mail
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils import timezone
+from datetime import datetime
+
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -27,10 +27,9 @@ def addOrderItems(request):
         order = Order.objects.create(
             user=user,
             paymentMethod=data['paymentMethod'],
-            giftPrice=data['giftPrice'],
             taxPrice=data['taxPrice'],
             shippingPrice=data['shippingPrice'],
-            totalPrice=data['totalPrice'],
+            totalPrice=data['totalPrice']
         )
 
         # (2) Create shipping address
@@ -47,7 +46,7 @@ def addOrderItems(request):
             country=data['shippingAddress']['country'],
         )
 
-        # (3) Create order items and set order to orderItem relationship
+        # (3) Create order items adn set order to orderItem relationship
         for i in orderItems:
             product = Product.objects.get(_id=i['product'])
 
@@ -63,7 +62,7 @@ def addOrderItems(request):
             # (4) Update stock
 
             product.countInStock -= item.qty
-            product.save()       
+            product.save()
 
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
@@ -89,6 +88,7 @@ def getOrders(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
+
     user = request.user
 
     try:
@@ -97,7 +97,7 @@ def getOrderById(request, pk):
             serializer = OrderSerializer(order, many=False)
             return Response(serializer.data)
         else:
-            return Response({'detail': 'Not authorized to view this order'},
+            Response({'detail': 'Not authorized to view this order'},
                      status=status.HTTP_400_BAD_REQUEST)
     except Order.DoesNotExist:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
@@ -111,7 +111,7 @@ def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isPaid = True
-    order.paidAt = timezone.now()
+    order.paidAt = datetime.now()
     order.save()
 
     return Response('Order was paid')
@@ -123,8 +123,7 @@ def updateOrderToDelivered(request, pk):
     order = Order.objects.get(_id=pk)
 
     order.isDelivered = True
-    order.deliveredAt = timezone.now()
+    order.deliveredAt = datetime.now()
     order.save()
 
     return Response('Order was delivered')
-
