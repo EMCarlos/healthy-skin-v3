@@ -27,7 +27,7 @@ This is a private repository maintained by Healthy Skin, a private company. This
 
 ## Prerequisites
 
-- Python 3.8+
+- Python 5.0+
 - PostgreSQL
 - Node.js and npm (for frontend)
 - Supabase account
@@ -70,7 +70,7 @@ SUPABASE_DB_PORT=5432
 # Supabase API Settings
 SUPABASE_URL=your-supabase-project-url
 SUPABASE_KEY=your-supabase-anon-key
-SUPABASE_STORAGE_BUCKET=healthyskin-bucket
+SUPABASE_STORAGE_BUCKET=supabase-storage-bucket
 ```
 
 5. Run migrations:
