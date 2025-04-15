@@ -24,7 +24,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_name(self, obj):
         name = obj.first_name
-
         if name == '':
             name = obj.email
 
@@ -36,7 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
         
 
 class UserSerializerWithToken(UserSerializer):
-    token = serializers.SerializerMethodField()
+    token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -55,8 +54,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    reviews = serializers.SerializerMethodField()
-    
+    reviews = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Product
         fields = '__all__'
@@ -80,9 +79,9 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    orderItems = serializers.SerializerMethodField()
-    shippingAddress = serializers.SerializerMethodField()
-    user = serializers.SerializerMethodField()
+    orderItems = serializers.SerializerMethodField(read_only=True)
+    shippingAddress = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Order
