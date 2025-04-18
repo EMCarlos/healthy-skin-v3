@@ -1,18 +1,21 @@
+import useGeneralStore from "@/store";
+import { Heart, Menu, ShoppingCart, User, X } from "lucide-react";
 import { useState } from "react";
-import { ShoppingCart, User, Heart, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useFavorites } from "@/contexts/FavoritesContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { favorites } = useFavorites();
+  const favorites = useGeneralStore((state) => state.favorites);
 
   return (
     <header className="w-full bg-white shadow-sm z-50 sticky top-0">
       <div className="container mx-auto px-4 md:px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link
+            to="/"
+            className="flex items-center"
+          >
             <h1 className="text-2xl md:text-3xl font-playfair font-bold text-purple">
               Healthy <span className="text-gold">Skin</span>
             </h1>
@@ -20,23 +23,38 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="font-medium hover:text-purple transition-colors">
+            <Link
+              to="/"
+              className="font-medium hover:text-purple transition-colors"
+            >
               Home
             </Link>
-            <Link to="/products" className="font-medium hover:text-purple transition-colors">
+            <Link
+              to="/products"
+              className="font-medium hover:text-purple transition-colors"
+            >
               Products
             </Link>
-            <Link to="/about" className="font-medium hover:text-purple transition-colors">
+            <Link
+              to="/about"
+              className="font-medium hover:text-purple transition-colors"
+            >
               About
             </Link>
-            <Link to="/contact" className="font-medium hover:text-purple transition-colors">
+            <Link
+              to="/contact"
+              className="font-medium hover:text-purple transition-colors"
+            >
               Contact
             </Link>
           </nav>
 
           {/* Desktop Icons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/favorites" className="p-2 hover:bg-beige rounded-full transition-colors relative">
+            <Link
+              to="/favorites"
+              className="p-2 hover:bg-beige rounded-full transition-colors relative"
+            >
               <Heart className="h-5 w-5 text-purple" />
               {favorites.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-purple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -44,10 +62,16 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            <Link to="/account" className="p-2 hover:bg-beige rounded-full transition-colors">
+            <Link
+              to="/account"
+              className="p-2 hover:bg-beige rounded-full transition-colors"
+            >
               <User className="h-5 w-5 text-purple" />
             </Link>
-            <Link to="/cart" className="p-2 hover:bg-beige rounded-full transition-colors relative">
+            <Link
+              to="/cart"
+              className="p-2 hover:bg-beige rounded-full transition-colors relative"
+            >
               <ShoppingCart className="h-5 w-5 text-purple" />
               <span className="absolute -top-1 -right-1 bg-purple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 0

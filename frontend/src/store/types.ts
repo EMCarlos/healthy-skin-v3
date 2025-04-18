@@ -1,4 +1,4 @@
-import { AuthUser } from "@/types";
+import { AuthUser, Product } from "@/types";
 
 export type userType = {
   isLogged: boolean;
@@ -9,4 +9,11 @@ export type userType = {
   setIsLoadingUser: (isLoadingUser: userType["isLoadingUser"]) => void;
 };
 
-export type GeneralStore = userType;
+export type favoritesType = {
+  favorites: Product[];
+  addToFavorites: (product: Product) => void;
+  removeFromFavorites: (productId?: number) => void;
+  isFavorite: (productId?: number) => boolean;
+};
+
+export type GeneralStore = userType & favoritesType;
