@@ -62,6 +62,7 @@ STORAGES = {
             "bucket_name": os.environ.get("SUPABASE_S3_BUCKET_NAME"),
             "region_name": os.environ.get("SUPABASE_S3_REGION_NAME"),
             "endpoint_url": os.environ.get("SUPABASE_S3_ENDPOINT_URL"),
+            "querystring_auth": False,
         },
     },
 }
@@ -206,13 +207,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-# Supabase Configuration
-SUPABASE_URL = os.environ.get('SUPABASE_URL')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-SUPABASE_STORAGE_BUCKET = os.environ.get('SUPABASE_STORAGE_BUCKET', 'healthyskin-bucket')
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 if os.getcwd() == '/app':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
