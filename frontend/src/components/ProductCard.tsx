@@ -1,4 +1,4 @@
-import { useFavorites } from "@/contexts/FavoritesContext";
+import useGeneralStore from "@/store";
 import { Product } from "@/types";
 import { Ban, Heart, ShoppingCart, Star, Tag } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -20,7 +20,7 @@ const ProductCard = ({
   brand,
 }: Product & Props) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useGeneralStore();
   const isProductFavorite = isFavorite(_id);
   const isOutOfStock = useMemo(() => countInStock === 0, [countInStock]);
   const finalPrice = useMemo(() => {
