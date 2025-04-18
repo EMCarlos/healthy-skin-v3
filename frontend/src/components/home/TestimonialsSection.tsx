@@ -1,5 +1,10 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import TestimonialCard from "../TestimonialCard";
 
 // Sample testimonial data
@@ -42,44 +47,6 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const maxIndex = Math.round(testimonials.length / 4) - 1;
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : 0));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : maxIndex));
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 75) {
-      handleNext();
-    }
-    if (touchEndX.current - touchStartX.current > 75) {
-      handlePrev();
-    }
-  };
-
-  // Auto-advance carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [maxIndex]);
-
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -93,72 +60,31 @@ const TestimonialsSection = () => {
           </p>
         </div>
 
-        <div className="relative">
-          <div
-            className="overflow-hidden"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+        <div className="relative px-4 md:px-12">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
           >
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-                width: `${Math.ceil(testimonials.length / 3) * 100}%`,
-              }}
-            >
-              {[0, 1, 2].map((columnIndex) => (
-                <div
-                  key={columnIndex}
-                  className="w-full px-4"
+            <CarouselContent className="-ml-1 md:-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-1 md:pl-4 md:basis-1/2 lg:basis-1/3"
                 >
-                  <div className="grid grid-cols-1 gap-6">
-                    {testimonials
-                      .filter((_, index) => index % 3 === columnIndex)
-                      .map((testimonial, index) => (
-                        <TestimonialCard
-                          key={index}
-                          {...testimonial}
-                        />
-                      ))}
+                  <div className="h-full">
+                    <TestimonialCard {...testimonial} />
                   </div>
-                </div>
+                </CarouselItem>
               ))}
+            </CarouselContent>
+            <div className="hidden md:block">
+              <CarouselPrevious className="-left-12 md:-left-8" />
+              <CarouselNext className="-right-12 md:-right-8" />
             </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <button
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            className={`absolute top-1/2 left-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 ${
-              currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-beige"
-            }`}
-          >
-            <ChevronLeft className="h-6 w-6 text-purple" />
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={currentIndex === maxIndex}
-            className={`absolute top-1/2 right-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 ${
-              currentIndex === maxIndex ? "opacity-50 cursor-not-allowed" : "hover:bg-beige"
-            }`}
-          >
-            <ChevronRight className="h-6 w-6 text-purple" />
-          </button>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`h-2 w-2 rounded-full transition-all ${
-                  currentIndex === index ? "bg-purple w-6" : "bg-gray-300 hover:bg-purple/50"
-                }`}
-              />
-            ))}
-          </div>
+          </Carousel>
         </div>
       </div>
     </section>
