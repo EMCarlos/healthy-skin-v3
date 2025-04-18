@@ -5,9 +5,15 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    host: "::",
-    port: 8080,
+    host: true,
+    port: 8000,
+    open: true,
   },
+  esbuild: {
+    loader: "tsx",
+  },
+  root: "./",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {
