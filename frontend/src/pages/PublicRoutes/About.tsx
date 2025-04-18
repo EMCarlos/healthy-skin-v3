@@ -42,31 +42,37 @@ const About = () => {
               <div className="relative">
                 <div className="columns-2 sm:columns-3 gap-4 space-y-4">
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://images.unsplash.com/photo-1624984674735-7ecdbd7de244?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80"
                     alt="Woman applying skincare product"
                   />
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://images.unsplash.com/photo-1535031171703-48b1362baa98?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
                     alt="Woman looking at the mirror with skincare product"
                   />
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://i.imgur.com/fkKUjGX.jpg"
                     alt="Healthy skin serum skincare product"
                   />
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://images.unsplash.com/photo-1526413425697-1d271fdbe7a9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=464&q=80"
                     alt="Woman back"
                   />
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=435&q=80"
                     alt="Healthy skin The ordinary skincare product"
                   />
                   <img
+                    loading="lazy"
                     className="w-full mb-4 aspect-[3/4] object-cover rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     src="https://i.imgur.com/XDE0KD9.jpg"
                     alt="Happy woman with healthy skin"
