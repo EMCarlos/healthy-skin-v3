@@ -1,5 +1,4 @@
-
-import { Mail, Facebook, Instagram, Twitter, MapPin, Phone } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -11,17 +10,25 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-playfair font-bold mb-4">Healthy Skin</h3>
             <p className="mb-4 text-sm leading-relaxed">
-              Premium dermocosmetic products backed by science for radiant, healthy skin. Our products combine natural ingredients with scientific innovation.
+              Premium dermocosmetic products backed by science for radiant, healthy skin. Our
+              products combine natural ingredients with scientific innovation.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-gold transition-colors">
+              <a
+                href="https://www.facebook.com/healthyskin.au"
+                className="hover:text-gold transition-colors"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="hover:text-gold transition-colors">
+              <a
+                href="https://www.instagram.com/healthyskin.au/"
+                className="hover:text-gold transition-colors"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-gold transition-colors">
-                <Twitter className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -31,27 +38,42 @@ const Footer = () => {
             <h3 className="text-xl font-playfair font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/products" className="hover:text-gold transition-colors">
+                <Link
+                  to="/products"
+                  className="hover:text-gold transition-colors"
+                >
                   Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-gold transition-colors">
+                <Link
+                  to="/about"
+                  className="hover:text-gold transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="hover:text-gold transition-colors">
+                <Link
+                  to="/blog"
+                  className="hover:text-gold transition-colors"
+                >
                   Blog
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="hover:text-gold transition-colors">
+                <Link
+                  to="/faq"
+                  className="hover:text-gold transition-colors"
+                >
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-gold transition-colors">
+                <Link
+                  to="/contact"
+                  className="hover:text-gold transition-colors"
+                >
                   Contact
                 </Link>
               </li>
@@ -80,7 +102,9 @@ const Footer = () => {
           {/* Newsletter */}
           <div>
             <h3 className="text-xl font-playfair font-bold mb-4">Stay Updated</h3>
-            <p className="mb-4 text-sm">Subscribe to our newsletter for skincare tips and exclusive offers.</p>
+            <p className="mb-4 text-sm">
+              Subscribe to our newsletter for skincare tips and exclusive offers.
+            </p>
             <form className="flex flex-col space-y-2">
               <input
                 type="email"
@@ -101,10 +125,16 @@ const Footer = () => {
         <div className="pt-6 mt-6 border-t border-white/20 text-sm text-center md:text-left md:flex md:justify-between">
           <p>&copy; {new Date().getFullYear()} Healthy Skin. All rights reserved.</p>
           <div className="mt-2 md:mt-0 space-x-4">
-            <Link to="/privacy" className="hover:text-gold transition-colors">
+            <Link
+              to="/privacy"
+              className="hover:text-gold transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-gold transition-colors">
+            <Link
+              to="/terms"
+              className="hover:text-gold transition-colors"
+            >
               Terms of Service
             </Link>
           </div>
