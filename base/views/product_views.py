@@ -23,19 +23,23 @@ def getProducts(request):
     paginator = Paginator(products, 5)
 
     try:
-        products = paginator.page(page)
+        page_obj = paginator.page(page)
     except PageNotAnInteger:
-        products = paginator.page(1)
+        page_obj = paginator.page(1)
     except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+        page_obj = paginator.page(paginator.num_pages)
 
     if page == None:
         page = 1
 
     page = int(page)
-    print('Page:', page)
-    serializer = ProductSerializer(products, many=True)
-    return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
+    serializer = ProductSerializer(page_obj.object_list, many=True)
+    
+    return Response({
+        'products': serializer.data,
+        'page': page,
+        'pages': paginator.num_pages
+    })
 
 
 @api_view(['GET'])
