@@ -127,12 +127,17 @@ const Navbar = () => {
             {/* Mobile Icons */}
             <div className="flex items-center space-x-6 mt-6 pt-4 border-t border-gray-100">
               <Link
-                to="/wishlist"
-                className="flex items-center space-x-2 hover:text-purple transition-colors"
+                to="/favorites"
+                className="flex items-center space-x-2 hover:text-purple transition-colors relative"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Heart className="h-5 w-5" />
                 <span>Wishlist</span>
+                {favorites.length > 0 && (
+                  <span className="absolute -top-1 left-1 bg-purple text-white text-[12px] rounded-full h-4 w-4 flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
               </Link>
               <Link
                 to="/account"
@@ -149,7 +154,7 @@ const Navbar = () => {
               >
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart</span>
-                <span className="absolute -top-1 -right-1 bg-purple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 left-1 bg-purple text-white text-[12px] rounded-full h-4 w-4 flex items-center justify-center">
                   0
                 </span>
               </Link>
