@@ -62,26 +62,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Updated custom colors for the Healthy Skin store with pastel tones
+        // Updated custom colors with improved contrast while maintaining pastel look
         purple: {
-          DEFAULT: "#D8B7DD", // Soft Lilac
-          light: "#E6E6FA", // Lavender
-          dark: "#B095B6", // Darker Lilac
+          DEFAULT: "#9C75A3", // Darker Soft Lilac for better contrast
+          light: "#E6E6FA", // Lavender (background)
+          dark: "#663D70", // Much darker purple for text and headings
         },
         beige: {
           DEFAULT: "#F4EFF7", // Very Light Lavender
           light: "#ffffff",
-          dark: "#E6E6FA", // Lavender
+          dark: "#D8D0E8", // Slightly darker lavender
         },
         peach: {
-          DEFAULT: "#FFE5B4", // Pastel Peach
+          DEFAULT: "#F5B895", // Darker Pastel Peach for better contrast
           light: "#FFF5E6", // Lighter Peach
-          dark: "#FADADD", // Blush Pink
+          dark: "#E08163", // Darker peach for accents
         },
         gold: {
-          DEFAULT: "#FBE8A6", // Muted Gold
+          DEFAULT: "#E6C555", // Darker gold for better contrast
           light: "#FEF9E7", // Light Gold
-          dark: "#F5D892", // Darker Gold
+          dark: "#B89E43", // Much darker gold for text on light backgrounds
         },
       },
       borderRadius: {
