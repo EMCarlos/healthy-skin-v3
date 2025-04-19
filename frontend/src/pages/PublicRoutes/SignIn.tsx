@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Mail } from "lucide-react";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -48,9 +48,9 @@ const SignIn = () => {
     <Fragment>
       <Navbar />
 
-      <div className="min-h-dvh flex items-stretch">
+      <div className="min-h-[93dvh] flex items-stretch">
         {/* Left panel with form */}
-        <div className="sm:px-5 lg:ml-20 w-full max-w-md bg-white/90 backdrop-blur-lg p-8 rounded-lg shadow-xl border border-purple/20 max-h-[550px] lg:mt-auto lg:mb-auto relative lg:-right-[215px] z-20">
+        <div className="sm:px-5 lg:ml-20 w-full max-w-md bg-white/90 backdrop-blur-lg p-8 rounded-lg shadow-xl border border-purple/20 h-auto lg:mt-auto lg:mb-auto relative lg:-right-[215px] z-20">
           <div className="text-center mb-8">
             <img
               src={icon}
@@ -60,6 +60,23 @@ const SignIn = () => {
             <h1 className="text-3xl font-bold text-purple-dark mb-2">Welcome Back</h1>
             <p className="text-purple-dark/80">Sign in to your account</p>
           </div>
+
+          {/* TODO: Social Logins */}
+          {/* <Button
+            variant="outline"
+            className="w-full mb-6"
+          >
+            Continue with Google
+          </Button>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div> */}
 
           <Form {...form}>
             <form
