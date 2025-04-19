@@ -1,4 +1,4 @@
-import { AuthUser, Product } from "@/types";
+import { AuthUser, CartItem, Product } from "@/types";
 
 export type userType = {
   isLogged: boolean;
@@ -16,4 +16,12 @@ export type favoritesType = {
   isFavorite: (productId?: number) => boolean;
 };
 
-export type GeneralStore = userType & favoritesType;
+export type CartType = {
+  cartItems: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (id?: number) => void;
+  updateQuantity: (id?: number, quantity?: number) => void;
+  clearCart: () => void;
+};
+
+export type GeneralStore = userType & favoritesType & CartType;

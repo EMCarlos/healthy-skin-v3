@@ -30,3 +30,7 @@ export type Product = {
   createdAt?: Date;
   user?: number;
 };
+
+export type CartItem = Product & {
+  quantity?: number;
+};

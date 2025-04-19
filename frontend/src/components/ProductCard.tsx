@@ -21,6 +21,7 @@ const ProductCard = ({
 }: Product & Props) => {
   const [isHovered, setIsHovered] = useState(false);
   const { addToFavorites, removeFromFavorites, isFavorite } = useGeneralStore();
+  const addToCart = useGeneralStore((state) => state.addToCart);
   const isProductFavorite = isFavorite(_id);
   const isOutOfStock = useMemo(() => countInStock === 0, [countInStock]);
   const finalPrice = useMemo(() => {
@@ -100,6 +101,11 @@ const ProductCard = ({
         <button
           className="bg-purple text-white py-2 px-4 rounded-full shadow-md hover:bg-purple-dark transition-colors flex items-center space-x-2"
           disabled={isLoading || isOutOfStock} // Disable button if loading
+          onClick={(e) => {
+            e.preventDefault();
+            if (isOutOfStock) return;
+            addToCart({ _id, name, price, image, rating, category, quantity: 1 });
+          }}
         >
           <ShoppingCart className="h-4 w-4" />
           <span>Quick Add</span>

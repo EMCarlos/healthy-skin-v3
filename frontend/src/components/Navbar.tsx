@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const favorites = useGeneralStore((state) => state.favorites);
+  const cartItems = useGeneralStore((state) => state.cartItems);
+  const cartCount = cartItems.reduce((total, item) => total + (item.quantity ?? 0), 0);
 
   return (
     <header className="w-full bg-white shadow-sm z-50 sticky top-0">
@@ -74,7 +76,7 @@ const Navbar = () => {
             >
               <ShoppingCart className="h-5 w-5 text-purple" />
               <span className="absolute -top-1 -right-1 bg-purple text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
+                {cartCount}
               </span>
             </Link>
           </div>
@@ -155,7 +157,7 @@ const Navbar = () => {
                 <ShoppingCart className="h-5 w-5" />
                 <span>Cart</span>
                 <span className="absolute -top-1 left-1 bg-purple text-white text-[12px] rounded-full h-4 w-4 flex items-center justify-center">
-                  0
+                  {cartCount}
                 </span>
               </Link>
             </div>

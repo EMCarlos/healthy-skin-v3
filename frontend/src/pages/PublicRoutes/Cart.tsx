@@ -2,33 +2,20 @@ import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import useGeneralStore from "@/store/useGeneralStore";
 import { TrashIcon } from "lucide-react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
-// Mock cart data for demonstration
-const cartItems = [
-  {
-    id: 1,
-    name: "Niacinamide 10% + Zinc 1%",
-    price: 5.9,
-    image:
-      "https://images.unsplash.com/photo-1620916566482-c2d20e1664b1?auto=format&fit=crop&q=80&w=150",
-    quantity: 2,
-  },
-  {
-    id: 2,
-    name: "Hyaluronic Acid 2% + B5",
-    price: 6.8,
-    image:
-      "https://images.unsplash.com/photo-1608639103025-c3be0e01d15f?auto=format&fit=crop&q=80&w=150",
-    quantity: 1,
-  },
-];
-
 const Cart = () => {
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 4.99;
-  const total = subtotal + shipping;
+  const { cartItems, removeFromCart, updateQuantity } = useGeneralStore();
+
+  const subtotal = useMemo(
+    () => cartItems.reduce((sum, item) => sum + Number(item.price ?? 0) * (item.quantity ?? 0), 0),
+    [cartItems]
+  );
+  const shipping = useMemo(() => (cartItems.length > 0 ? 4.99 : 0), [cartItems]);
+  const total = useMemo(() => subtotal + shipping, [subtotal, shipping]);
 
   return (
     <div className="min-h-screen bg-background ">
@@ -41,28 +28,44 @@ const Cart = () => {
             <div className="md:col-span-2 space-y-4">
               {cartItems.map((item) => (
                 <Card
-                  key={item.id}
-                  className="overflow-hidden"
+                  key={item._id}
+                  className="overflow-h_idden"
                 >
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-24 h-24 object-cover rounded"
+                        className="w-32 h-32 object-contain rounded border-purple shadow-md hover:shadow-lg transition-shadow duration-300"
                       />
                       <div className="flex-1">
-                        <h3 className="font-medium">{item.name}</h3>
+                        ${Number(item.price ?? 0).toFixed(2)} each
                         <div className="text-sm text-muted-foreground mt-1">
-                          ${item.price.toFixed(2)} each
+                          ${Number(item.price ?? 0).toFixed(2)} each
                         </div>
                         <div className="flex items-center justify-between mt-4">
                           <div className="flex items-center border rounded">
-                            <button className="px-3 py-1 hover:bg-muted">-</button>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item._id, Math.max(1, (item.quantity ?? 1) - 1))
+                              }
+                              disabled={(item.quantity ?? 1) <= 1}
+                              className="px-3 py-1 hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              -
+                            </button>
                             <span className="px-3 py-1">{item.quantity}</span>
-                            <button className="px-3 py-1 hover:bg-muted">+</button>
+                            <button
+                              onClick={() => updateQuantity(item._id, (item.quantity ?? 0) + 1)}
+                              className="px-3 py-1 hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              +
+                            </button>
                           </div>
-                          <button className="text-destructive flex items-center gap-1 text-sm">
+                          <button
+                            className="text-destructive flex items-center gap-1 text-sm font-medium hover:underline"
+                            onClick={() => removeFromCart(item._id)}
+                          >
                             <TrashIcon size={16} />
                             Remove
                           </button>
@@ -104,8 +107,12 @@ const Cart = () => {
               <div className="text-sm text-muted-foreground">
                 <p className="mb-2">We accept:</p>
                 <div className="flex gap-2">
-                  <div className="bg-muted px-2 py-1 rounded text-xs">Bank Transfer</div>
-                  <div className="bg-muted px-2 py-1 rounded text-xs">Cash on Delivery</div>
+                  <div className="bg-muted px-2 py-1 rounded text-xs hover:bg-purple-light transition-colors cursor-pointer">
+                    Bank Transfer
+                  </div>
+                  <div className="bg-muted px-2 py-1 rounded text-xs hover:bg-purple-light transition-colors cursor-pointer">
+                    Cash on Delivery
+                  </div>
                 </div>
               </div>
             </div>
