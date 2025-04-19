@@ -17,6 +17,7 @@ const About = lazy(() => import("./pages/PublicRoutes/About"));
 const NotFound = lazy(() => import("./pages/PublicRoutes/NotFound"));
 const SignIn = lazy(() => import("./pages/PublicRoutes/SignIn"));
 const SignUp = lazy(() => import("./pages/PublicRoutes/SignUp"));
+const Cart = lazy(() => import("./pages/PublicRoutes/Cart"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -55,6 +56,10 @@ const App = () => (
             <Route
               path="/about"
               element={<About />}
+            />
+            <Route
+              path="/cart"
+              element={<Cart />}
             />
             {/* <Route
                 path="/contact"
