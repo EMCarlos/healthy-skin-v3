@@ -16,6 +16,7 @@ const Favorites = lazy(() => import("./pages/PublicRoutes/Favorites"));
 const About = lazy(() => import("./pages/PublicRoutes/About"));
 const NotFound = lazy(() => import("./pages/PublicRoutes/NotFound"));
 const SignIn = lazy(() => import("./pages/PublicRoutes/SignIn"));
+const SignUp = lazy(() => import("./pages/PublicRoutes/SignUp"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -63,11 +64,11 @@ const App = () => (
               path="/signin"
               element={<SignIn />}
             />
-            {/*   <Route
-                path="/signup"
-                element={<SignUp />}
-              />
-              */}
+            <Route
+              path="/signup"
+              element={<SignUp />}
+            />
+
             <Route
               path="*"
               element={<NotFound />}
