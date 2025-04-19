@@ -52,9 +52,13 @@ const NotFound = () => {
   return (
     <>
       <Navbar />
-      <div
+      <section
         className="min-h-screen flex items-center justify-center bg-gray-100 overflow-hidden "
-        style={{ fontFamily: "'FK', Arial, sans-serif", background: "#E0DCC7", minHeight: "100vh" }}
+        style={{
+          fontFamily: "'FK', Arial, sans-serif",
+          background: "#E0DCC7",
+          minHeight: "92.5dvh",
+        }}
         ref={sectionRef}
       >
         <div
@@ -71,16 +75,17 @@ const NotFound = () => {
             <span className="text-[120px] text-gray-200">Page</span>
             <span className="serif text-[100px] text-gray-400">not found</span>
           </h1>
-          <Link to={"/"}>
-            <button className="mt-8 py-3 px-6 bg-white bg-opacity-20 text-white text-xl hover:text-black text-md rounded-md shadow hover:bg-peach transition duration-200 z-10 relative">
-              Go Back Home
-            </button>
+          <Link
+            to={"/"}
+            className="mt-8 py-3 px-6 bg-white text-gray-800 text-xl hover:text-black text-md rounded-md shadow hover:bg-peach transition duration-200 z-10 relative"
+          >
+            Go Back Home
           </Link>
         </div>
 
-        <section
+        <div
           className="hero not-found__section"
-          style={{ position: "fixed", width: "100dvw", height: "100dvh" }}
+          style={{ position: "fixed", width: "100dvw", height: "91dvh" }}
         >
           {ghostImages.map((src, index) => (
             <img
@@ -95,8 +100,8 @@ const NotFound = () => {
               loading="lazy"
             />
           ))}
-        </section>
-      </div>
+        </div>
+      </section>
     </>
   );
 };
