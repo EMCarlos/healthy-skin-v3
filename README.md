@@ -18,7 +18,7 @@ This is a private repository maintained by Healthy Skin, a private company. This
 
 ## Tech Stack
 
-- **Backend**: Django 3.2.7
+- **Backend**: Django 5.0.7
 - **Database**: PostgreSQL (via Supabase)
 - **Storage**: Supabase Storage
 - **Authentication**: JWT (JSON Web Tokens)
@@ -27,7 +27,7 @@ This is a private repository maintained by Healthy Skin, a private company. This
 
 ## Prerequisites
 
-- Python 5.0+
+- Python 3.10+
 - PostgreSQL
 - Node.js and npm (for frontend)
 - Supabase account
