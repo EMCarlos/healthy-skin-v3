@@ -194,7 +194,7 @@ MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'frontend/src/assets',
+    BASE_DIR / 'frontend/dist',
 ]
 
 
