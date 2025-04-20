@@ -233,35 +233,35 @@ const Checkout = () => {
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectItem
-                            value="aw"
+                            value="Aruba"
                             country="aw"
                             className="flex items-center gap-x-1"
                           >
                             Aruba
                           </SelectItem>
                           <SelectItem
-                            value="usa"
+                            value="United States"
                             country="us"
                             className="flex items-center gap-x-1"
                           >
                             United States
                           </SelectItem>
                           <SelectItem
-                            value="can"
+                            value="Canada"
                             country="ca"
                             className="flex items-center gap-x-1"
                           >
                             Canada
                           </SelectItem>
                           <SelectItem
-                            value="uk"
+                            value="United Kingdom"
                             country="gb"
                             className="flex items-center gap-x-1"
                           >
                             United Kingdom
                           </SelectItem>
                           <SelectItem
-                            value="au"
+                            value="Australia"
                             country="au"
                             className="flex items-center gap-x-1"
                           >
