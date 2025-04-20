@@ -83,7 +83,7 @@ const Checkout = () => {
       isGift,
       paymentMethod: paymentMethod ?? "bank",
     });
-    navigate("/order-confirmation");
+    navigate("/order-review");
   };
 
   useEffect(() => {
