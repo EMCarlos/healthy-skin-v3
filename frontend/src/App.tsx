@@ -22,6 +22,7 @@ const Cart = lazy(() => import("./pages/PublicRoutes/Cart"));
 const Checkout = lazy(() => import("./pages/PublicRoutes/Checkout"));
 const OrderReview = lazy(() => import("./pages/PublicRoutes/OrderReview"));
 const OrderConfirmation = lazy(() => import("./pages/ProtectedRoutes/OrderConfirmation"));
+const Account = lazy(() => import("./pages/ProtectedRoutes/Account"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -78,6 +79,14 @@ const App = () => (
               element={
                 <Protected>
                   <OrderConfirmation />
+                </Protected>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <Protected>
+                  <Account />
                 </Protected>
               }
             />

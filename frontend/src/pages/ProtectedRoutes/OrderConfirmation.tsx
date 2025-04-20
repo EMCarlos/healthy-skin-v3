@@ -132,7 +132,7 @@ const OrderConfirmation = () => {
         </Card>
 
         {/* Admin section with delivery status */}
-        <Card className="mb-6 border-dashed border-amber-500">
+        <Card className="mb-6 border-dashed border-amber-500 border-[1px]">
           <CardContent className="p-6">
             <h2 className="font-semibold text-lg mb-4">Admin Controls</h2>
 

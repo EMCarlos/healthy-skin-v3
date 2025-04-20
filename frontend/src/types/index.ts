@@ -31,6 +31,15 @@ export type Product = {
   user?: number;
 };
 
+export interface Order {
+  id: string;
+  date: string;
+  total: number;
+  status: string;
+  paymentStatus: string;
+  customer?: string;
+}
+
 export type CartItem = Product & {
   quantity?: number;
 };
