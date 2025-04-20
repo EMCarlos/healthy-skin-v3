@@ -55,14 +55,6 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/blog"
-                  className="hover:text-gold transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/faq"
                   className="hover:text-gold transition-colors"
                 >
@@ -99,8 +91,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div>
+          {/* //TODO: Newsletter */}
+          {/* <div>
             <h3 className="text-xl font-playfair font-bold mb-4">Stay Updated</h3>
             <p className="mb-4 text-sm">
               Subscribe to our newsletter for skincare tips and exclusive offers.
@@ -119,6 +111,7 @@ const Footer = () => {
               </button>
             </form>
           </div>
+          */}
         </div>
 
         {/* Bottom Footer */}
