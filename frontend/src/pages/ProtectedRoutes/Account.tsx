@@ -1,6 +1,7 @@
 import { OrdersTab } from "@/components/account/OrdersTab";
 import { ProductsTab } from "@/components/account/ProductsTab";
 import { ProfileTab } from "@/components/account/ProfileTab";
+import Navbar from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Package, Shield, User } from "lucide-react";
 
@@ -63,8 +64,9 @@ const products = [
 
 const Account = () => {
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-6xl mx-auto mt-5 p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Account Settings</h1>
           <p className="text-muted-foreground">Manage your account preferences and settings</p>
