@@ -137,7 +137,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('SUPABASE_DB_NAME'),        # often 'postgres'
         'USER': os.environ.get('SUPABASE_DB_USER'),        # your user, not 'postgres'
         'PASSWORD': os.environ.get('SUPABASE_DB_PASSWORD'),
