@@ -67,7 +67,7 @@ const OrderReview = () => {
     navigate("/order-confirmation");
   };
 
-  if (!cartItems.length) navigate("/cart");
+  if (!cartItems.length && !checkoutForm?.phone) navigate("/cart");
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">

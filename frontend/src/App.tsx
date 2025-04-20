@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Loader2 } from "lucide-react";
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Protected from "./layout/protected";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,8 @@ const SignIn = lazy(() => import("./pages/PublicRoutes/SignIn"));
 const SignUp = lazy(() => import("./pages/PublicRoutes/SignUp"));
 const Cart = lazy(() => import("./pages/PublicRoutes/Cart"));
 const Checkout = lazy(() => import("./pages/PublicRoutes/Checkout"));
+const OrderReview = lazy(() => import("./pages/PublicRoutes/OrderReview"));
+const OrderConfirmation = lazy(() => import("./pages/ProtectedRoutes/OrderConfirmation"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -65,6 +68,18 @@ const App = () => (
             <Route
               path="/checkout"
               element={<Checkout />}
+            />
+            <Route
+              path="/order-review"
+              element={<OrderReview />}
+            />
+            <Route
+              path="/order-confirmation"
+              element={
+                <Protected>
+                  <OrderConfirmation />
+                </Protected>
+              }
             />
             {/* <Route
                 path="/contact"
