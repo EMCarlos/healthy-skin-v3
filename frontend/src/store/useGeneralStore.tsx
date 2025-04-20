@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import createSelectors from "./createSelectors";
-import { cart, favorites, user } from "./slices";
+import { cart, checkout, favorites, user } from "./slices";
 import { GeneralStore } from "./types";
 
 const useGeneralStoreBase = create<GeneralStore>()(
@@ -11,6 +11,7 @@ const useGeneralStoreBase = create<GeneralStore>()(
         ...user(...SetGet),
         ...favorites(...SetGet),
         ...cart(...SetGet),
+        ...checkout(...SetGet),
       }),
       {
         name: "General Store",

@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { CartType, favoritesType, userType } from "./types";
+import { CartType, CheckoutType, favoritesType, userType } from "./types";
 
 export const user: StateCreator<userType> = (set) => ({
   isLogged: false,
@@ -49,4 +49,9 @@ export const cart: StateCreator<CartType, [], [], CartType> = (set) => ({
       cartItems: state.cartItems.map((i) => (i._id === id ? { ...i, quantity } : i)),
     })),
   clearCart: () => set({ cartItems: [] }),
+});
+
+export const checkout: StateCreator<CheckoutType, [], [], CheckoutType> = (set) => ({
+  checkoutForm: null,
+  setCheckoutForm: (form) => set({ checkoutForm: form }),
 });

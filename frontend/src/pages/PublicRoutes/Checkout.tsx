@@ -13,23 +13,128 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import useGeneralStore from "@/store/useGeneralStore";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const [isGift, setIsGift] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("bank");
 
-  // Mock data for order summary
-  const subtotal = 18.6;
+  // Zustand store for saving checkout form
+  const checkoutForm = useGeneralStore((state) => state.checkoutForm);
+  const setCheckoutForm = useGeneralStore((state) => state.setCheckoutForm);
+  const cartItems = useGeneralStore((state) => state.cartItems);
+  const {
+    firstname,
+    lastname,
+    email,
+    phone,
+    address,
+    city,
+    postalCode,
+    country,
+    giftFrom,
+    giftTo,
+    giftMessage,
+    paymentMethod,
+    isGift: storeIsGift,
+  } = checkoutForm || {};
+
+  // Local state for form fields
+  const [form, setForm] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "usa",
+    giftFrom: "",
+    giftTo: "",
+    giftMessage: "",
+    paymentMethod: "bank",
+  });
+
+  const subtotal = useMemo(() => {
+    return cartItems.reduce(
+      (total, item) => total + Number(item.price ?? 0) * (item.quantity ?? 1),
+      0
+    );
+  }, [cartItems]);
   const shipping = 4.99;
-  const total = subtotal + shipping;
+  const total = useMemo(() => subtotal + shipping, [shipping, subtotal]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+
+    setForm((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleCountryChange = (value: string) => {
+    setForm((prev) => ({ ...prev, country: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setCheckoutForm({
+      ...form,
+      isGift,
+      paymentMethod: paymentMethod ?? "bank",
+    });
     navigate("/order-confirmation");
   };
+
+  useEffect(() => {
+    if (firstname) {
+      setForm((prev) => ({
+        ...prev,
+        firstname: firstname ?? prev.firstname,
+        lastname: lastname ?? prev.lastname,
+        email: email ?? prev.email,
+        phone: phone ?? prev.phone,
+        address: address ?? prev.address,
+        city: city ?? prev.city,
+        postalCode: postalCode ?? prev.postalCode,
+        country: country ?? prev.country,
+        giftFrom: giftFrom ?? prev.giftFrom,
+        giftTo: giftTo ?? prev.giftTo,
+        giftMessage: giftMessage ?? prev.giftMessage,
+      }));
+    }
+    setIsGift(!!storeIsGift);
+  }, [
+    firstname,
+    lastname,
+    email,
+    phone,
+    address,
+    city,
+    postalCode,
+    country,
+    giftFrom,
+    giftTo,
+    giftMessage,
+    storeIsGift,
+  ]);
+
+  if (!cartItems.length) {
+    return (
+      <div className="min-h-screen bg-background p-4 md:p-8">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold mb-2">Checkout</h1>
+          <h2 className="text-3xl font-bold mb-2">Your cart is empty</h2>
+          <p className="text-muted-foreground mb-8">
+            Add items to your cart to proceed with checkout.
+          </p>
+          <Link to="/products">
+            <Button>Browse Products</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -46,19 +151,23 @@ const Checkout = () => {
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="firstname">First Name</Label>
                       <Input
-                        id="firstName"
+                        id="firstname"
                         placeholder="First name"
                         required
+                        value={form.firstname}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastname">Last Name</Label>
                       <Input
-                        id="lastName"
+                        id="lastname"
                         placeholder="Last name"
                         required
+                        value={form.lastname}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
@@ -68,6 +177,8 @@ const Checkout = () => {
                         type="email"
                         placeholder="Email address"
                         required
+                        value={form.email}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
@@ -76,6 +187,8 @@ const Checkout = () => {
                         id="phone"
                         placeholder="Phone number"
                         required
+                        value={form.phone}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -84,6 +197,8 @@ const Checkout = () => {
                         id="address"
                         placeholder="Street address"
                         required
+                        value={form.address}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
@@ -92,6 +207,8 @@ const Checkout = () => {
                         id="city"
                         placeholder="City"
                         required
+                        value={form.city}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
@@ -100,19 +217,56 @@ const Checkout = () => {
                         id="postalCode"
                         placeholder="Postal code"
                         required
+                        value={form.postalCode}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="country">Country</Label>
-                      <Select defaultValue="usa">
+                      <Select
+                        defaultValue={"usa"}
+                        value={form.country}
+                        onValueChange={handleCountryChange}
+                      >
                         <SelectTrigger id="country">
                           <SelectValue placeholder="Select country" />
                         </SelectTrigger>
                         <SelectContent position="popper">
-                          <SelectItem value="usa">United States</SelectItem>
-                          <SelectItem value="can">Canada</SelectItem>
-                          <SelectItem value="uk">United Kingdom</SelectItem>
-                          <SelectItem value="au">Australia</SelectItem>
+                          <SelectItem
+                            value="aw"
+                            country="aw"
+                            className="flex items-center gap-x-1"
+                          >
+                            Aruba
+                          </SelectItem>
+                          <SelectItem
+                            value="usa"
+                            country="us"
+                            className="flex items-center gap-x-1"
+                          >
+                            United States
+                          </SelectItem>
+                          <SelectItem
+                            value="can"
+                            country="ca"
+                            className="flex items-center gap-x-1"
+                          >
+                            Canada
+                          </SelectItem>
+                          <SelectItem
+                            value="uk"
+                            country="gb"
+                            className="flex items-center gap-x-1"
+                          >
+                            United Kingdom
+                          </SelectItem>
+                          <SelectItem
+                            value="au"
+                            country="au"
+                            className="flex items-center gap-x-1"
+                          >
+                            Australia
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -120,20 +274,24 @@ const Checkout = () => {
                 </CardContent>
               </Card>
 
+              {/* Payment method section */}
               <Card className="mb-6">
                 <CardContent className="p-6">
                   <h2 className="font-semibold text-lg mb-4">Payment Method</h2>
 
                   <RadioGroup
                     defaultValue="bank"
-                    value={paymentMethod}
-                    onValueChange={setPaymentMethod}
+                    value={form.paymentMethod}
+                    onValueChange={(value) =>
+                      setForm((prev) => ({ ...prev, paymentMethod: value }))
+                    }
                     className="space-y-3"
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
                         value="bank"
                         id="bank"
+                        checked={form.paymentMethod === "bank"}
                       />
                       <Label
                         htmlFor="bank"
@@ -149,6 +307,7 @@ const Checkout = () => {
                       <RadioGroupItem
                         value="cash"
                         id="cash"
+                        checked={form.paymentMethod === "cash"}
                       />
                       <Label
                         htmlFor="cash"
@@ -164,6 +323,7 @@ const Checkout = () => {
                 </CardContent>
               </Card>
 
+              {/* Gift section */}
               <Card className="mb-6">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-2">
@@ -187,6 +347,8 @@ const Checkout = () => {
                         <Input
                           id="giftFrom"
                           placeholder="Your name"
+                          value={form.giftFrom}
+                          onChange={handleInputChange}
                         />
                       </div>
                       <div className="space-y-2">
@@ -194,6 +356,8 @@ const Checkout = () => {
                         <Input
                           id="giftTo"
                           placeholder="Recipient's name"
+                          value={form.giftTo}
+                          onChange={handleInputChange}
                         />
                       </div>
                       <div className="space-y-2">
@@ -202,6 +366,8 @@ const Checkout = () => {
                           id="giftMessage"
                           placeholder="Add your personal message here"
                           className="min-h-[100px]"
+                          value={form.giftMessage}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -218,6 +384,7 @@ const Checkout = () => {
             </form>
           </div>
 
+          {/* Order Summary Card */}
           <div>
             <Card className="sticky top-8">
               <CardContent className="p-6">
@@ -242,8 +409,18 @@ const Checkout = () => {
                 <div className="mt-6 text-sm text-muted-foreground">
                   <p>Your order includes:</p>
                   <ul className="list-disc pl-4 mt-1 space-y-1">
-                    <li>Niacinamide 10% + Zinc 1% (2)</li>
-                    <li>Hyaluronic Acid 2% + B5 (1)</li>
+                    {cartItems.map((item) => (
+                      <li
+                        key={item._id}
+                        className="flex justify-between"
+                      >
+                        <span>
+                          {item.name}{" "}
+                          <span className="text-peach-dark">({Number(item.quantity ?? 0)})</span>
+                        </span>
+                        <span>${Number(item.price ?? 0) * (item.quantity ?? 1)}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </CardContent>

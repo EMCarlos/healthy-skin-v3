@@ -109,9 +109,10 @@ function SelectLabel({ className, ...props }: SelectLabelProps) {
 
 interface SelectItemProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
   className?: string;
+  country?: string;
 }
 
-function SelectItem({ className, children, ...props }: SelectItemProps) {
+function SelectItem({ className, country, children, ...props }: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       className={cn(
@@ -126,6 +127,14 @@ function SelectItem({ className, children, ...props }: SelectItemProps) {
         </SelectPrimitive.ItemIndicator>
       </span>
 
+      {country && (
+        <img
+          src={`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${country}.svg`}
+          alt="country-flag-icon"
+          className="inline-block w-4 h-4"
+          style={{ borderRadius: "0.3rem" }}
+        />
+      )}
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );

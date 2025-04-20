@@ -24,4 +24,25 @@ export type CartType = {
   clearCart: () => void;
 };
 
-export type GeneralStore = userType & favoritesType & CartType;
+export interface CheckoutForm {
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  isGift: boolean;
+  paymentMethod: string;
+  giftFrom?: string;
+  giftTo?: string;
+  giftMessage?: string;
+}
+
+export interface CheckoutType {
+  checkoutForm: CheckoutForm | null;
+  setCheckoutForm: (form: CheckoutForm) => void;
+}
+
+export type GeneralStore = userType & favoritesType & CartType & CheckoutType;
