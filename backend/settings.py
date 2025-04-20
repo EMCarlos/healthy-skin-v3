@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'healthyskin.herokuapp.com', 'www.healthyskinaruba.com', 'healthyskinaruba.com', "healthy-skin-v3.vercel.app"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'healthyskin.herokuapp.com', 'healthy-skin-v3-feb7e40fa621.herokuapp.com', 'www.healthyskinaruba.com', 'healthyskinaruba.com', "healthy-skin-v3.vercel.app"]
 
 
 # Application definition
