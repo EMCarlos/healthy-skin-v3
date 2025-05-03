@@ -13,6 +13,7 @@ const queryClient = new QueryClient();
 // Lazy load components
 const Landing = lazy(() => import("./pages/PublicRoutes/Landing"));
 const Products = lazy(() => import("./pages/PublicRoutes/Products"));
+const ProductDetail = lazy(() => import("./pages/PublicRoutes/ProductDetail"));
 const Favorites = lazy(() => import("./pages/PublicRoutes/Favorites"));
 const About = lazy(() => import("./pages/PublicRoutes/About"));
 const NotFound = lazy(() => import("./pages/PublicRoutes/NotFound"));
@@ -53,6 +54,10 @@ const App = () => (
             <Route
               path="/products"
               element={<Products />}
+            />
+            <Route
+              path="/product/:productId"
+              element={<ProductDetail />}
             />
 
             <Route
