@@ -47,12 +47,12 @@ interface ProductsTabProps {
 export const ProductsTab = ({ products }: ProductsTabProps) => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 px-8 py-4">
-        <div>
+      <CardHeader className="flex max-sm:flex-col max-sm:gap-4 flex-row items-center justify-between space-y-0 px-8 py-4">
+        <div className="flex flex-col space-y-1 max-sm:w-full ">
           <CardTitle>Product Management</CardTitle>
           <CardDescription>Manage your store's products</CardDescription>
         </div>
-        <Button>
+        <Button className="max-sm:w-full">
           <Plus className="h-4 w-4 mr-2" />
           Add Product
         </Button>

@@ -74,7 +74,7 @@ const Account = () => {
 
         <Tabs
           defaultValue="profile"
-          className="space-y-4"
+          className="space-y-4 overflow-hidden w-full"
         >
           <TabsList>
             <TabsTrigger value="profile">
