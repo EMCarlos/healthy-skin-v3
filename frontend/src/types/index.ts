@@ -1,14 +1,13 @@
 export type AuthUser = {
+  refresh: string;
+  access: string;
   id: number;
-  is_superuser: boolean;
+  _id: number;
   username: string;
-  firstname?: string;
-  lastname?: string;
   email: string;
-  last_login: string;
-  is_staff: boolean;
-  is_active: boolean;
-  date_joined: string;
+  name: string;
+  lastname: string;
+  isAdmin: boolean;
   token: string;
 };
 

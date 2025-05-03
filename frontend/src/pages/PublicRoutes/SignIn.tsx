@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import useLogin from "@/hooks/useLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Mail } from "lucide-react";
-import { Fragment } from "react";
+import { Loader, Lock, Mail } from "lucide-react";
+import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const signInSchema = z.object({
@@ -27,6 +28,7 @@ type SignInValues = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
   const { toast } = useToast();
+  const { login, loading, error, userLogged } = useLogin();
   const form = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -36,13 +38,22 @@ const SignIn = () => {
   });
 
   const onSubmit = (values: SignInValues) => {
-    console.log(values);
-    toast({
-      title: "Sign in attempted",
-      description: "This is a demo. Authentication is not implemented.",
-      variant: "default",
-    });
+    login(values);
+
+    // toast({
+    //   title: "Sign in attempted",
+    //   description: "This is a demo. Authentication is not implemented.",
+    //   variant: "default",
+    // });
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userLogged) {
+      navigate("/account", { replace: true });
+    }
+  }, [userLogged, navigate]);
 
   return (
     <Fragment>
@@ -130,9 +141,11 @@ const SignIn = () => {
                 type="submit"
                 className="w-full bg-purple-dark hover:bg-purple text-white font-medium"
               >
-                Sign In
+                {loading ? <Loader /> : "Sign In"}
               </Button>
             </form>
+
+            {error && <div className="text-red-600 font-medium text-center mt-4">{error}</div>}
           </Form>
 
           <div className="mt-6 text-center text-purple-dark">

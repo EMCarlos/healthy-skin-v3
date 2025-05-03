@@ -65,7 +65,7 @@ const Navbar = () => {
               )}
             </Link>
             <Link
-              to="/account"
+              to="/signin"
               className="p-2 hover:bg-beige rounded-full transition-colors"
             >
               <User className="h-5 w-5 text-purple" />
@@ -142,7 +142,7 @@ const Navbar = () => {
                 )}
               </Link>
               <Link
-                to="/account"
+                to="/signin"
                 className="flex items-center space-x-2 hover:text-purple transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
