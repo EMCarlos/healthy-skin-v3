@@ -1,8 +1,56 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import useGeneralStore from "@/store";
+import { useEffect, useState } from "react";
 
 export const ProfileTab = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const [message, setMessage] = useState("");
+  const { userLogged } = useGeneralStore();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (formData?.password !== formData?.confirmPassword) {
+      setMessage("Passwords do not match");
+    } else {
+      // dispatch(updateUserProfile(formData))
+      setMessage("Updated profile!");
+
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been updated successfully.",
+        variant: "default",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (userLogged) {
+      setFormData({
+        name: userLogged?.name ?? "",
+        lastname: userLogged?.lastname ?? "",
+        email: userLogged?.email ?? "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
+  }, [userLogged]);
+
   return (
     <Card>
       <CardHeader>
@@ -13,26 +61,40 @@ export const ProfileTab = () => {
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm text-muted-foreground">First Name</label>
-            <Input placeholder="Enter your first name" />
+            <Input
+              name="name"
+              placeholder="Enter your first name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
           </div>
           <div className="space-y-2">
             <label className="text-sm text-muted-foreground">Last Name</label>
-            <Input placeholder="Enter your last name" />
+            <Input
+              name="lastname"
+              placeholder="Enter your last name"
+              value={formData.lastname}
+              onChange={handleInputChange}
+            />
           </div>
           <div className="space-y-2">
             <label className="text-sm text-muted-foreground">Email</label>
             <Input
+              name="email"
               type="email"
               placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleInputChange}
             />
           </div>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <label className="text-sm text-muted-foreground">Phone</label>
             <Input
               type="tel"
               placeholder="Enter your phone number"
+              value={userLogged?. ?? ""}
             />
-          </div>
+          </div> */}
         </div>
         <Button>Save Changes</Button>
       </CardContent>

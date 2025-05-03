@@ -3,6 +3,7 @@ import { ProductsTab } from "@/components/account/ProductsTab";
 import { ProfileTab } from "@/components/account/ProfileTab";
 import Navbar from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useGeneralStore from "@/store";
 import { Clock, Package, Shield, User } from "lucide-react";
 
 // Mock orders data
@@ -63,6 +64,9 @@ const products = [
 ];
 
 const Account = () => {
+  const { userLogged } = useGeneralStore();
+  const isAdmin = userLogged?.isAdmin;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -90,14 +94,20 @@ const Account = () => {
               <Settings className="h-4 w-4 mr-2" />
               Settings
             </TabsTrigger> */}
-            <TabsTrigger value="admin">
-              <Shield className="h-4 w-4 mr-2" />
-              Admin
-            </TabsTrigger>
-            <TabsTrigger value="products">
-              <Package className="h-4 w-4 mr-2" />
-              Products
-            </TabsTrigger>
+
+            {/* Only show admin tab if user is admin */}
+            {isAdmin && (
+              <>
+                <TabsTrigger value="admin">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Admin
+                </TabsTrigger>
+                <TabsTrigger value="products">
+                  <Package className="h-4 w-4 mr-2" />
+                  Products
+                </TabsTrigger>
+              </>
+            )}
           </TabsList>
 
           <TabsContent value="profile">
@@ -113,16 +123,20 @@ const Account = () => {
             <SettingsTab />
           </TabsContent> */}
 
-          <TabsContent value="admin">
-            <OrdersTab
-              orders={allOrders}
-              showCustomer={true}
-            />
-          </TabsContent>
+          {isAdmin && (
+            <>
+              <TabsContent value="admin">
+                <OrdersTab
+                  orders={allOrders}
+                  showCustomer={true}
+                />
+              </TabsContent>
 
-          <TabsContent value="products">
-            <ProductsTab products={products} />
-          </TabsContent>
+              <TabsContent value="products">
+                <ProductsTab products={products} />
+              </TabsContent>
+            </>
+          )}
         </Tabs>
       </div>
     </div>
