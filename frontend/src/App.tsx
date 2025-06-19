@@ -2,11 +2,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Loader2 } from "lucide-react";
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Protected from "./layout/protected";
+import { QueryProvider } from "./providers/QueryProvider";
 
 const queryClient = new QueryClient();
 
@@ -34,13 +34,7 @@ const LoadingFallback = () => (
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    {import.meta.env.DEV && (
-      <ReactQueryDevtools
-        initialIsOpen={false}
-        buttonPosition="bottom-left"
-      />
-    )}
+  <QueryProvider>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -121,7 +115,7 @@ const App = () => (
         </Suspense>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
+  </QueryProvider>
 );
 
 export default App;
