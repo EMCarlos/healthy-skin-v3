@@ -9,6 +9,8 @@ function authRequestInterceptor() {
   const token = user?.token;
   axiosInstance.interceptors.request.use((config) => {
     if (token) {
+      if (config.params?.public) return config;
+
       if (!config.headers) {
         config.headers = {} as AxiosHeaders;
       }

@@ -10,7 +10,7 @@ type ProductsResponse = {
 };
 
 const getProductList = async () => {
-  const { data } = await axios.get<ProductsResponse>(`/api/products`);
+  const { data } = await axios.get<ProductsResponse>(`/api/products`, { params: { public: true } });
 
   return data;
 };
