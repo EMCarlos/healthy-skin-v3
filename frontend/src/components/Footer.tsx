@@ -20,7 +20,12 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer noopener"
               >
-                <Facebook className="h-5 w-5" />
+                <img
+                  className="h-5 w-5 hover:opacity-80 transition-opacity"
+                  height="20"
+                  width="20"
+                  src="https://cdn.simpleicons.org/facebook/white"
+                />
               </a>
               <a
                 href="https://www.instagram.com/healthyskin.au/"
@@ -28,7 +33,25 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer noopener"
               >
-                <Instagram className="h-5 w-5" />
+                <img
+                  className="h-5 w-5 hover:opacity-80 transition-opacity"
+                  height="20"
+                  width="20"
+                  src="https://cdn.simpleicons.org/instagram/white"
+                />
+              </a>
+              <a
+                href="https://www.tiktok.com/@healthyskin/"
+                className="hover:text-gold transition-colors"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <img
+                  className="h-5 w-5 hover:opacity-80 transition-opacity"
+                  height="20"
+                  width="20"
+                  src="https://cdn.simpleicons.org/tiktok/white"
+                />
               </a>
             </div>
           </div>
@@ -40,7 +63,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/products"
-                  className="hover:text-gold transition-colors"
+                  className="hover:text-purple transition-colors"
                 >
                   Products
                 </Link>
@@ -48,7 +71,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-gold transition-colors"
+                  className="hover:text-purple transition-colors"
                 >
                   About Us
                 </Link>
@@ -56,19 +79,20 @@ const Footer = () => {
               <li>
                 <Link
                   to="/faq"
-                  className="hover:text-gold transition-colors"
+                  className="hover:text-purple transition-colors"
                 >
                   FAQs
                 </Link>
               </li>
-              <li>
+              {/* //TODO: Contact Page */}
+              {/* <li>
                 <Link
                   to="/contact"
                   className="hover:text-gold transition-colors"
                 >
                   Contact
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -76,17 +100,28 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-playfair font-bold mb-4">Contact Us</h3>
             <ul className="space-y-3">
-              <li className="flex items-start">
+              {/* <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 mt-0.5" />
-                <span>123 Beauty Street, Skincare City, SC 12345</span>
-              </li>
-              <li className="flex items-center">
+                <a
+                  href="https://maps.app.goo.gl/cyPdMyKXVJRSeU7n6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  123 Beauty Street, Skincare City, SC 12345
+                </a>
+              </li> */}
+              <a
+                className="flex items-center hover:opacity-80 transition-opacity"
+                href="https://api.whatsapp.com/send?phone=2977429297"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Phone className="h-5 w-5 mr-2" />
-                <span>+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center">
+                <span>+297 742 9297</span>
+              </a>
+              <li className="flex items-center hover:opacity-80 transition-opacity">
                 <Mail className="h-5 w-5 mr-2" />
-                <span>hello@healthyskin.com</span>
+                <a href="mailto:healthyskinaruba@gmail.com">healthyskinaruba@gmail.com</a>
               </li>
             </ul>
           </div>
@@ -117,7 +152,8 @@ const Footer = () => {
         {/* Bottom Footer */}
         <div className="pt-6 mt-6 border-t border-white/20 text-sm text-center md:text-left md:flex md:justify-between">
           <p>&copy; {new Date().getFullYear()} Healthy Skin. All rights reserved.</p>
-          <div className="mt-2 md:mt-0 space-x-4">
+          {/* //TODO: Add Privacy Policy and Terms of Service Links */}
+          {/* <div className="mt-2 md:mt-0 space-x-4">
             <Link
               to="/privacy"
               className="hover:text-gold transition-colors"
@@ -130,7 +166,7 @@ const Footer = () => {
             >
               Terms of Service
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
