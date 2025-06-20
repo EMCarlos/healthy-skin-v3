@@ -37,14 +37,13 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
-    class Meta:
-        model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'lastname', 'isAdmin', 'token']
-        read_only_fields = ['id', '_id', 'isAdmin', 'token']
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ['token']
+        read_only_fields = UserSerializer.Meta.read_only_fields + ['token']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
-        return str(token.access_token)
+        return str(token)
 
 
 class ReviewSerializer(serializers.ModelSerializer):
