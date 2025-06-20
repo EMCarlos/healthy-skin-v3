@@ -2,6 +2,7 @@ import useGeneralStore from "@/store";
 import { Heart, Menu, ShoppingCart, User, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import icon from "@/assets/hs-icon-md.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +19,12 @@ const Navbar = () => {
             to="/"
             className="flex items-center"
           >
-            <h1 className="text-2xl md:text-3xl font-playfair font-bold text-purple">
+            <h1 className="text-2xl md:text-3xl font-playfair font-bold text-purple flex items-center">
+              <img
+                src={icon}
+                alt="Logo"
+                className="w-8 h-8 mr-1"
+              />
               Healthy <span className="text-gold">Skin</span>
             </h1>
           </Link>

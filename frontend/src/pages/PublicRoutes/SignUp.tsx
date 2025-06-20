@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import icon from "@/assets/hs-icon-md.png";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -95,6 +96,11 @@ const SignUp = () => {
         <div className="w-full lg:w-[500px] xl:w-[600px] bg-background p-8 flex flex-col justify-center relative z-10">
           <div className="max-w-[400px] mx-auto w-full">
             <div className="mb-8">
+              <img
+                src={icon}
+                alt="Logo"
+                className="w-16 h-16 mx-auto mb-4"
+              />
               <h1 className="text-3xl font-bold text-foreground mb-2">Create account</h1>
               <p className="text-muted-foreground">Join our community today</p>
             </div>
