@@ -9,17 +9,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { userApi } from "@/services/apiServices";
+import useGeneralStore from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Mail, User } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const signUpSchema = z
   .object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    name: z.string().min(2, "First name must be at least 2 characters"),
+    lastname: z.string().min(2, "Last name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email address"),
     confirmEmail: z.string().email("Please enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -30,21 +33,48 @@ const signUpSchema = z
   });
 
 type SignUpValues = z.infer<typeof signUpSchema>;
+type SignUpForm = Pick<z.infer<typeof signUpSchema>, "name" | "lastname" | "email" | "password">;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { setUserLogged, setIsLogged } = useGeneralStore();
+  const { toast } = useToast();
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
+      lastname: "",
       email: "",
       confirmEmail: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: SignUpValues) => {
-    console.log(values);
+  const onSubmit = async (values: SignUpForm) => {
+    await userApi
+      .register({
+        name: values.name,
+        lastname: values.lastname,
+        email: values.email,
+        password: values.password,
+      })
+      .then((data) => {
+        setIsLogged(true);
+        setUserLogged(data);
+        navigate("/account", { replace: true });
+      })
+      .catch((err: any) => {
+        const detail = err?.response && err?.response?.data?.detail;
+
+        if (detail?.includes("User with this email already exists")) {
+          toast({
+            title: "Email already exists",
+            description: "An account with this email already exists. Please sign in.",
+            variant: "destructive",
+          });
+        }
+      });
   };
 
   return (
@@ -88,13 +118,14 @@ const SignUp = () => {
 
             <Form {...form}>
               <form
+                id="signup-form"
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
@@ -115,7 +146,7 @@ const SignUp = () => {
 
                   <FormField
                     control={form.control}
-                    name="lastName"
+                    name="lastname"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
@@ -200,12 +231,15 @@ const SignUp = () => {
                 />
 
                 <Button
+                  form="signup-form"
                   type="submit"
                   className="w-full"
                 >
                   Create Account
                 </Button>
               </form>
+
+              {error && <div className="text-red-600 font-medium text-center mt-4">{error}</div>}
             </Form>
 
             <div className="mt-6 text-center text-muted-foreground">
