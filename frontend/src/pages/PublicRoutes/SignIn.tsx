@@ -55,6 +55,16 @@ const SignIn = () => {
     }
   }, [userLogged, navigate]);
 
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Sign in failed",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
   return (
     <Fragment>
       <Navbar />
@@ -144,8 +154,6 @@ const SignIn = () => {
                 {loading ? <Loader /> : "Sign In"}
               </Button>
             </form>
-
-            {error && <div className="text-red-600 font-medium text-center mt-4">{error}</div>}
           </Form>
 
           <div className="mt-6 text-center text-purple-dark">
