@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
+from django.http import JsonResponse
 
 from base.models import Product, Review
 from base.serializers import ProductSerializer
@@ -35,7 +35,7 @@ def getProducts(request):
     page = int(page)
     serializer = ProductSerializer(page_obj.object_list, many=True)
     
-    return Response({
+    return JsonResponse({
         'products': serializer.data,
         'page': page,
         'pages': paginator.num_pages
@@ -46,7 +46,7 @@ def getProducts(request):
 def getTopProducts(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
     serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['GET'])
@@ -54,11 +54,11 @@ def getProduct(request, pk):
     try:
         product = Product.objects.get(_id=pk)
         serializer = ProductSerializer(product, many=False)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
     except Product.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'detail': f'Error retrieving product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': f'Error retrieving product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -80,7 +80,7 @@ def createProduct(request):
     )
 
     serializer = ProductSerializer(product, many=False)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['PUT'])
@@ -102,12 +102,12 @@ def updateProduct(request, pk):
 
         product.save()
         serializer = ProductSerializer(product, many=False)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
      
     except Product.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'detail': f'Error updating product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': f'Error updating product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
@@ -116,11 +116,11 @@ def deleteProduct(request, pk):
     try:
         product = Product.objects.get(_id=pk)
         product.delete()
-        return Response({'detail': 'Product deleted successfully'})
+        return JsonResponse({'detail': 'Product deleted successfully'})
     except Product.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'detail': f'Error deleting product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': f'Error deleting product: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -133,11 +133,11 @@ def uploadImage(request):
         product.image = request.FILES.get('image')
         product.save()
 
-        return Response({'detail': 'Image was uploaded successfully'})
+        return JsonResponse({'detail': 'Image was uploaded successfully'})
     except Product.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'detail': f'Error uploading image: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': f'Error uploading image: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -149,15 +149,15 @@ def createProductReview(request, pk):
         data = request.data
 
         # 1 - Review already exists
-        alreadyExists = product.review_set.filter(user=user).exists()
+        alreadyExists = product.review_set.filter(user=user).exists() # type: ignore
         if alreadyExists:
             content = {'detail': 'Product already reviewed'}
-            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(content, status=status.HTTP_400_BAD_REQUEST)
 
         # 2 - No Rating or 0
         elif data['rating'] == 0:
             content = {'detail': 'Please select a rating'}
-            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(content, status=status.HTTP_400_BAD_REQUEST)
 
         # 3 - Create review
         else:
@@ -169,18 +169,18 @@ def createProductReview(request, pk):
                 comment=data['comment'],
             )
 
-            reviews = product.review_set.all()
+            reviews = product.review_set.all() # type: ignore
             product.numReviews = len(reviews)
 
             total = 0
             for i in reviews:
                 total += i.rating
 
-            product.rating = total / len(reviews)
+            product.rating = total / len(reviews) # type: ignore
             product.save()
 
-            return Response({'detail': 'Review added successfully'})
+            return JsonResponse({'detail': 'Review added successfully'})
     except Product.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'detail': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
