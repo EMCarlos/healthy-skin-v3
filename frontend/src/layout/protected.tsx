@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import useGeneralStore from "@/store/useGeneralStore";
+import React, { Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -6,10 +7,12 @@ type Props = {
 };
 const Protected: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
+  const { userLogged, isLogged } = useGeneralStore();
 
   // TODO: Check if the user is authenticated
-  const isAuthenticated = true;
-  if (!isAuthenticated) navigate("/signin");
+  useEffect(() => {
+    if (!isLogged) navigate("/signin");
+  }, [isLogged]);
 
   return <Fragment>{children}</Fragment>;
 };
