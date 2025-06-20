@@ -43,12 +43,13 @@ const Navbar = () => {
             >
               About
             </Link>
-            <Link
+            {/* //TODO: Contact Page */}
+            {/* <Link
               to="/contact"
               className="font-medium hover:text-purple transition-colors"
             >
               Contact
-            </Link>
+            </Link> */}
           </nav>
 
           {/* Desktop Icons */}
@@ -117,13 +118,14 @@ const Navbar = () => {
               >
                 About
               </Link>
-              <Link
+              {/* //TODO: Contact Page */}
+              {/* <Link
                 to="/contact"
                 className="py-2 font-medium hover:text-purple transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
-              </Link>
+              </Link> */}
             </nav>
 
             {/* Mobile Icons */}
