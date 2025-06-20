@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Mail } from "lucide-react";
 
@@ -26,22 +25,23 @@ const NewsletterSection = () => {
             Join Our Skincare Community
           </h2>
           <p className="text-white/80 mb-8">
-            Subscribe to our newsletter and get 15% off your first order, plus receive
-            skincare tips, exclusive offers, and early access to new products.
+            Subscribe to our newsletter and get 15% off your first order, plus receive skincare
+            tips, exclusive offers, and early access to new products.
           </p>
 
           {isSubscribed ? (
             <div className="bg-white/10 p-6 rounded-lg animate-scale-in">
-              <h3 className="text-2xl font-playfair font-semibold mb-2">
-                Thank You!
-              </h3>
+              <h3 className="text-2xl font-playfair font-semibold mb-2">Thank You!</h3>
               <p>
-                You've successfully subscribed to our newsletter. Your discount code
-                will be emailed to you shortly.
+                You've successfully subscribed to our newsletter. Your discount code will be emailed
+                to you shortly.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+            >
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
@@ -60,7 +60,10 @@ const NewsletterSection = () => {
               </div>
               <p className="text-sm text-white/60">
                 By subscribing, you agree to our{" "}
-                <a href="/privacy" className="underline hover:text-gold transition-colors">
+                <a
+                  href="/privacy"
+                  className="underline hover:text-gold transition-colors"
+                >
                   Privacy Policy
                 </a>
                 . You can unsubscribe at any time.
