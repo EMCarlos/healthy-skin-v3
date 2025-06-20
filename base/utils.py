@@ -46,4 +46,4 @@ def cartData(request):
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
 
-	return {'cartItems':cartItems}
+	return {'cartItems':cartItems} # type: ignore
