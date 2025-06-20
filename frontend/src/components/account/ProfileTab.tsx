@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import useGeneralStore from "@/store";
+import useGeneralStore, { useUser } from "@/store";
 import { useEffect, useState } from "react";
 
 export const ProfileTab = () => {
@@ -19,25 +19,8 @@ export const ProfileTab = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const [message, setMessage] = useState("");
   const { userLogged } = useGeneralStore();
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    if (formData?.password !== formData?.confirmPassword) {
-      setMessage("Passwords do not match");
-    } else {
-      // dispatch(updateUserProfile(formData))
-      setMessage("Updated profile!");
-
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
-        variant: "default",
-      });
-    }
-  };
+  const { updateUser, logout } = useUser({});
 
   useEffect(() => {
     if (userLogged) {
@@ -96,7 +79,15 @@ export const ProfileTab = () => {
             />
           </div> */}
         </div>
-        <Button>Save Changes</Button>
+        <div className="flex max-sm:flex-col gap-4">
+          <Button onClick={() => updateUser(formData)}>Save Changes</Button>
+          <Button
+            className="bg-red-500 text-white hover:bg-red-600 max-sm:w-full"
+            onClick={logout}
+          >
+            Logout
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
