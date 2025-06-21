@@ -9,6 +9,8 @@ export type AuthUser = {
   lastname: string;
   isAdmin: boolean;
   token: string;
+  last_login: Date | null;
+  date_joined: Date;
 };
 
 export type Product = {
