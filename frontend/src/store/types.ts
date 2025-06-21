@@ -21,6 +21,10 @@ export type CartType = {
   addToCart: (item: CartItem) => void;
   removeFromCart: (id?: number) => void;
   updateQuantity: (id?: number, quantity?: number) => void;
+  shippingAddress?: string;
+  paymentMethod?: string;
+  saveShippingAddress: (address: string) => void;
+  savePaymentMethod: (paymentMethod: string) => void;
   clearCart: () => void;
 };
 

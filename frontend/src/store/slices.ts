@@ -48,7 +48,17 @@ export const cart: StateCreator<CartType, [], [], CartType> = (set) => ({
     set((state) => ({
       cartItems: state.cartItems.map((i) => (i._id === id ? { ...i, quantity } : i)),
     })),
-  clearCart: () => set({ cartItems: [] }),
+  saveShippingAddress: (address) =>
+    set((state) => ({
+      ...state,
+      shippingAddress: address,
+    })),
+  savePaymentMethod: (paymentMethod) =>
+    set((state) => ({
+      ...state,
+      paymentMethod,
+    })),
+  clearCart: () => set({ cartItems: [], shippingAddress: undefined, paymentMethod: undefined }),
 });
 
 export const checkout: StateCreator<CheckoutType, [], [], CheckoutType> = (set) => ({
