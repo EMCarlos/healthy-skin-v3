@@ -72,7 +72,6 @@ export const ProductsTab = ({ products }: ProductsTabProps) => {
 
       setImage(file.name || data); // Use data.image if your API returns { image: "url" }
       setUploading(false);
-      queryClient.invalidateQueries({ queryKey: ["products-list"] });
     } catch (error) {
       setUploading(false);
     }
@@ -80,6 +79,7 @@ export const ProductsTab = ({ products }: ProductsTabProps) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     const form = e.target;
     const productId = form.productId.value;
     const name = form.name.value;
@@ -97,7 +97,7 @@ export const ProductsTab = ({ products }: ProductsTabProps) => {
       name,
       price,
       discount,
-      image,
+      image: image ?? "sample_image.jpg", // Default image if none uploaded
       brand,
       size,
       about,
