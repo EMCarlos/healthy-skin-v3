@@ -7,91 +7,14 @@ import useGetProductList from "@/hooks/useGetProductList";
 import useGeneralStore from "@/store";
 import { User, Shield, Settings, Clock, Package, Users } from "lucide-react";
 import { UsersTab } from "@/components/account/UsersTab";
-import { useUsersList } from "@/hooks";
-
-// Mock orders data
-const orders = [
-  {
-    id: "ORD-2025419-001",
-    date: "2025-04-19",
-    total: 23.59,
-    status: "Delivered",
-    paymentStatus: "Paid",
-  },
-  {
-    id: "ORD-2025419-002",
-    date: "2025-04-19",
-    total: 18.6,
-    status: "Processing",
-    paymentStatus: "Pending",
-  },
-];
-
-// Mock all orders for admin
-const allOrders = [
-  ...orders,
-  {
-    id: "ORD-2025419-003",
-    date: "2025-04-19",
-    total: 45.99,
-    status: "Pending",
-    paymentStatus: "Paid",
-    customer: "Jane Smith",
-  },
-  {
-    id: "ORD-2025419-004",
-    date: "2025-04-19",
-    total: 32.8,
-    status: "Delivered",
-    paymentStatus: "Paid",
-    customer: "Mike Johnson",
-  },
-];
-
-// Mock users data for admin
-const users = [
-  {
-    id: "USER-001",
-    name: "John Doe",
-    email: "john.doe@email.com",
-    role: "Customer",
-    status: "Active",
-    joinDate: "2025-01-15",
-    lastLogin: "2025-04-19",
-  },
-  {
-    id: "USER-002",
-    name: "Jane Smith",
-    email: "jane.smith@email.com",
-    role: "Customer",
-    status: "Active",
-    joinDate: "2025-02-10",
-    lastLogin: "2025-04-18",
-  },
-  {
-    id: "USER-003",
-    name: "Mike Johnson",
-    email: "mike.johnson@email.com",
-    role: "Customer",
-    status: "Inactive",
-    joinDate: "2025-01-05",
-    lastLogin: "2025-03-15",
-  },
-  {
-    id: "USER-004",
-    name: "Sarah Wilson",
-    email: "sarah.wilson@email.com",
-    role: "Admin",
-    status: "Active",
-    joinDate: "2024-12-01",
-    lastLogin: "2025-04-19",
-  },
-];
+import { useMyOrders, useOrderHistory, useUsersList } from "@/hooks";
 
 const Account = () => {
   const { userLogged } = useGeneralStore();
   const { isLoading, products = [] } = useGetProductList();
   const { usersList, isLoadingUsersList } = useUsersList();
+  const { orderHistory, isLoadingOrders } = useOrderHistory();
+  const { myOrders, isLoadingMyOrders } = useMyOrders();
   const isAdmin = userLogged?.isAdmin;
 
   return (
@@ -146,7 +69,7 @@ const Account = () => {
           </TabsContent>
 
           <TabsContent value="orders">
-            <OrdersTab orders={orders} />
+            <OrdersTab orders={myOrders} />
           </TabsContent>
 
           {/* //TODO: Next */}
@@ -158,7 +81,7 @@ const Account = () => {
             <>
               <TabsContent value="admin">
                 <OrdersTab
-                  orders={allOrders}
+                  orders={orderHistory}
                   showCustomer={true}
                 />
               </TabsContent>

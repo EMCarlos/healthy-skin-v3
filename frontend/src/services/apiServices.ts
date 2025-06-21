@@ -84,34 +84,13 @@ export const productApi = {
   },
 };
 
-// Cart API services
-export const cartApi = {
-  getCart: async (): Promise<CartItem[]> => {
-    const { data } = await axios.get("/cart/");
-    return data;
-  },
-
-  addToCart: async (item: CartItem): Promise<CartItem> => {
-    const { data } = await axios.post("/cart/", item);
-    return data;
-  },
-
-  updateCartItem: async (id: number, quantity: number): Promise<CartItem> => {
-    const { data } = await axios.put(`/cart/${id}/`, { quantity });
-    return data;
-  },
-
-  removeFromCart: async (id: number): Promise<void> => {
-    await axios.delete(`/cart/${id}/`);
-  },
-
-  clearCart: async (): Promise<void> => {
-    await axios.delete("/cart/");
-  },
-};
-
 // Checkout API services
-export const checkoutApi = {
+export const ordersApi = {
+  createOrders: async (cartItems: CartItem[]): Promise<any> => {
+    const { data } = await axios.post("/api/orders/add/", { cartItems });
+    return data;
+  },
+
   submitOrder: async (checkoutData: CheckoutForm): Promise<any> => {
     const { data } = await axios.post("/api/orders/", checkoutData);
     return data;
@@ -119,6 +98,26 @@ export const checkoutApi = {
 
   getOrderHistory: async (): Promise<any[]> => {
     const { data } = await axios.get("/api/orders/");
+    return data;
+  },
+
+  getMyOrders: async (): Promise<any[]> => {
+    const { data } = await axios.get("/api/orders/myorders/");
+    return data;
+  },
+
+  getOrderDetails: async (id: number): Promise<any> => {
+    const { data } = await axios.get(`/api/orders/${id}/`);
+    return data;
+  },
+
+  payOrder: async (orderId: number, paymentResult: any): Promise<any> => {
+    const { data } = await axios.put(`/api/orders/${orderId}/pay/`, paymentResult);
+    return data;
+  },
+
+  deliverOrder: async (orderId: number): Promise<any> => {
+    const { data } = await axios.put(`/api/orders/${orderId}/deliver/`);
     return data;
   },
 };
