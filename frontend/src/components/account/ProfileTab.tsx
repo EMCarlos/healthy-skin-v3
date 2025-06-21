@@ -81,7 +81,7 @@ export const ProfileTab = () => {
             />
           </div> */}
         </div>
-        <div className="flex max-sm:flex-col gap-4">
+        <div className="flex max-sm:flex-col gap-4 py-3">
           <Button onClick={() => updateUser(formData)}>Save Changes</Button>
           <Button
             className="bg-red-500 text-white hover:bg-red-600 max-sm:w-full"
