@@ -31,7 +31,7 @@ export const userApi = {
   },
 
   updateUserAsAdmin: async (userData: any): Promise<AuthUser> => {
-    const { data } = await axios.put(`/api/users/${userData?.id}/`, userData);
+    const { data } = await axios.put(`/api/users/update/${userData?.id}/`, userData);
     return data;
   },
 
