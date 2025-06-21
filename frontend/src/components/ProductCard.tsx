@@ -58,7 +58,7 @@ const ProductCard = ({
         {isOutOfStock && (
           <Badge
             variant="destructive"
-            className="bg-red text-white"
+            className="bg-red-400 text-white"
           >
             <Ban className="h-3.5 w-3.5 mr-1" />
             Out of Stock

@@ -163,7 +163,7 @@ const ProductDetail = () => {
                   <span className="text-2xl font-semibold text-purple">
                     ${finalPrice.toFixed(2)}
                   </span>
-                  {product?.discount && (
+                  {parseFloat(product?.discount ?? "0") > 0 && (
                     <>
                       <span className="text-lg text-gray-400 line-through">
                         ${Number(product?.price ?? 0)?.toFixed(2)}
