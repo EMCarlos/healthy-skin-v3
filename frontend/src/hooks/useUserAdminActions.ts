@@ -14,9 +14,7 @@ export const useUserAdminActions = () => {
         description: "The user has been updated successfully.",
         variant: "default",
       });
-      queryClient.setQueryData(["listUsers"], (old: any) => {
-        return old.map((user: any) => (user.id === data.id ? data : user));
-      });
+      queryClient.invalidateQueries({ queryKey: ["listUsers"] });
     },
     onError: (error: any) => {
       toast({
@@ -38,9 +36,7 @@ export const useUserAdminActions = () => {
         description: "The user has been deleted successfully.",
         variant: "default",
       });
-      queryClient.setQueryData(["listUsers"], (old: any) => {
-        return old.filter((user: any) => user.id !== id);
-      });
+      queryClient.invalidateQueries({ queryKey: ["listUsers"] });
     },
     onError: (error: any) => {
       toast({
