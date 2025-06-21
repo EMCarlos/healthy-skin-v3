@@ -89,7 +89,7 @@ def getUsers(request):
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
-    return JsonResponse(serializer.data)
+    return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -108,7 +108,7 @@ def updateUser(request, pk):
 
     serializer = UserSerializer(user, many=False)
 
-    return JsonResponse(serializer.data)
+    return Response(serializer.data)
 
 
 @api_view(['DELETE'])
@@ -116,4 +116,4 @@ def updateUser(request, pk):
 def deleteUser(request, pk):
     userForDeletion = User.objects.get(id=pk)
     userForDeletion.delete()
-    return JsonResponse('User was deleted')
+    return Response('User was deleted')
