@@ -1,4 +1,4 @@
-import { checkoutApi, userApi, productApi } from "@/services/apiServices";
+import { ordersApi, userApi, productApi } from "@/services/apiServices";
 import { CartItem } from "@/types";
 import { parseImageUrl } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -61,7 +61,7 @@ export const useCheckout = () => {
   const queryClient = useQueryClient();
 
   const submitOrderMutation = useMutation({
-    mutationFn: checkoutApi.submitOrder,
+    mutationFn: ordersApi.submitOrder,
     onSuccess: () => {
       // After successful checkout, clear cart
       queryClient.setQueryData(["cart"], []);
@@ -76,7 +76,7 @@ export const useCheckout = () => {
     error,
   } = useQuery({
     queryKey: ["orders"],
-    queryFn: checkoutApi.getOrderHistory,
+    queryFn: ordersApi.getOrderHistory,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 

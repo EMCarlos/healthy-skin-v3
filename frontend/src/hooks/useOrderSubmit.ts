@@ -1,11 +1,11 @@
-import { checkoutApi } from "@/services/apiServices";
+import { ordersApi } from "@/services/apiServices";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useOrderSubmit = () => {
   const queryClient = useQueryClient();
 
   const submitOrderMutation = useMutation({
-    mutationFn: checkoutApi.submitOrder,
+    mutationFn: ordersApi.submitOrder,
     onSuccess: () => {
       // After successful checkout, clear cart
       queryClient.setQueryData(["cart"], []);

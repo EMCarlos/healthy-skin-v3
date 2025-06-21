@@ -1,4 +1,4 @@
-import { checkoutApi } from "@/services/apiServices";
+import { ordersApi } from "@/services/apiServices";
 import { useQuery } from "@tanstack/react-query";
 
 export const useOrderHistory = () => {
@@ -8,7 +8,7 @@ export const useOrderHistory = () => {
     error,
   } = useQuery({
     queryKey: ["orders"],
-    queryFn: checkoutApi.getOrderHistory,
+    queryFn: ordersApi.getOrderHistory,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 
