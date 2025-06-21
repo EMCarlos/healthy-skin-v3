@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useUserUpdate } from "@/hooks";
+import { useUser, useUserUpdate } from "@/hooks";
 import { useToast } from "@/hooks/use-toast";
-import useGeneralStore, { useUser } from "@/store";
+import useGeneralStore from "@/store";
 import { useEffect, useState } from "react";
 
 export const ProfileTab = () => {
