@@ -101,6 +101,7 @@ def updateUser(request, pk):
 
     user.first_name = data['name']
     user.username = data['email']
+    user.last_name = data['lastname']
     user.email = data['email']
     user.is_staff = data['isAdmin']
 
@@ -108,7 +109,7 @@ def updateUser(request, pk):
 
     serializer = UserSerializer(user, many=False)
 
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['DELETE'])
