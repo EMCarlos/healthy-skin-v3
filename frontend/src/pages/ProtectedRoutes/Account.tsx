@@ -5,7 +5,9 @@ import Navbar from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useGetProductList from "@/hooks/useGetProductList";
 import useGeneralStore from "@/store";
-import { Clock, Package, Shield, User } from "lucide-react";
+import { User, Shield, Settings, Clock, Package, Users } from "lucide-react";
+import { UsersTab } from "@/components/account/UsersTab";
+import { useUsersList } from "@/hooks";
 
 // Mock orders data
 const orders = [
@@ -46,27 +48,50 @@ const allOrders = [
   },
 ];
 
-// Mock products data
-const products = [
+// Mock users data for admin
+const users = [
   {
-    id: "PROD-001",
-    name: "Modern Desk Lamp",
-    price: 49.99,
-    stock: 15,
-    category: "Lighting",
+    id: "USER-001",
+    name: "John Doe",
+    email: "john.doe@email.com",
+    role: "Customer",
+    status: "Active",
+    joinDate: "2025-01-15",
+    lastLogin: "2025-04-19",
   },
   {
-    id: "PROD-002",
-    name: "Ergonomic Chair",
-    price: 299.99,
-    stock: 8,
-    category: "Furniture",
+    id: "USER-002",
+    name: "Jane Smith",
+    email: "jane.smith@email.com",
+    role: "Customer",
+    status: "Active",
+    joinDate: "2025-02-10",
+    lastLogin: "2025-04-18",
+  },
+  {
+    id: "USER-003",
+    name: "Mike Johnson",
+    email: "mike.johnson@email.com",
+    role: "Customer",
+    status: "Inactive",
+    joinDate: "2025-01-05",
+    lastLogin: "2025-03-15",
+  },
+  {
+    id: "USER-004",
+    name: "Sarah Wilson",
+    email: "sarah.wilson@email.com",
+    role: "Admin",
+    status: "Active",
+    joinDate: "2024-12-01",
+    lastLogin: "2025-04-19",
   },
 ];
 
 const Account = () => {
   const { userLogged } = useGeneralStore();
   const { isLoading, products = [] } = useGetProductList();
+  const { usersList, isLoadingUsersList } = useUsersList();
   const isAdmin = userLogged?.isAdmin;
 
   return (
@@ -108,6 +133,10 @@ const Account = () => {
                   <Package className="h-4 w-4 mr-2" />
                   Products
                 </TabsTrigger>
+                <TabsTrigger value="users">
+                  <Users className="h-4 w-4 mr-2" />
+                  Users
+                </TabsTrigger>
               </>
             )}
           </TabsList>
@@ -136,6 +165,10 @@ const Account = () => {
 
               <TabsContent value="products">
                 <ProductsTab products={products} />
+              </TabsContent>
+
+              <TabsContent value="users">
+                <UsersTab users={usersList ?? []} />
               </TabsContent>
             </>
           )}
