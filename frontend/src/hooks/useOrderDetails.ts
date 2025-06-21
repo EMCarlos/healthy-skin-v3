@@ -8,7 +8,8 @@ export const useOrderDetails = (orderId: number | undefined) => {
     error,
   } = useQuery({
     queryKey: ["orderDetails", orderId],
-    queryFn: () => (orderId ? ordersApi.getOrderDetails(orderId) : Promise.reject("No order ID provided")),
+    queryFn: () =>
+      orderId ? ordersApi.getOrderDetails(orderId) : Promise.reject("No order ID provided"),
     enabled: !!orderId,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });

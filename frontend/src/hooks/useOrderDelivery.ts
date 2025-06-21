@@ -25,7 +25,8 @@ export const useOrderDelivery = () => {
         title: "Delivery update failed",
         description:
           error.response && error.response.data.detail
-            ? error.response?.data?.detail || "An error occurred while updating the delivery status."
+            ? error.response?.data?.detail ||
+              "An error occurred while updating the delivery status."
             : error.message,
         variant: "destructive",
       });
