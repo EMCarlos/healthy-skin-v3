@@ -19,8 +19,11 @@ const useLogin = () => {
 
       const { data } = await axios.post("/api/users/login/", { username: email, password }, config);
 
-      setIsLogged(true);
       setUserLogged(data);
+
+      setTimeout(() => {
+        setIsLogged(true);
+      }, 500);
     } catch (err: any) {
       setError(err.response && err.response.data.detail ? err.response.data.detail : err.message);
     } finally {

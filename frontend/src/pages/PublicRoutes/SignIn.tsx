@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import useLogin from "@/hooks/useLogin";
+import useGeneralStore from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader, Lock, Mail } from "lucide-react";
 import { Fragment, useEffect } from "react";
@@ -28,7 +29,8 @@ type SignInValues = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
   const { toast } = useToast();
-  const { login, loading, error, userLogged } = useLogin();
+  const { login, loading, error } = useLogin();
+  const { isLogged } = useGeneralStore();
   const form = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -37,23 +39,14 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = (values: SignInValues) => {
-    login(values);
-
-    // toast({
-    //   title: "Sign in attempted",
-    //   description: "This is a demo. Authentication is not implemented.",
-    //   variant: "default",
-    // });
-  };
-
+  const onSubmit = (values: SignInValues) => login(values);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userLogged) {
+    if (isLogged) {
       navigate("/account", { replace: true });
     }
-  }, [userLogged, navigate]);
+  }, [isLogged, navigate]);
 
   useEffect(() => {
     if (error) {
