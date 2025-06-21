@@ -1,1 +1,0 @@
-import{r,U as n,G as s}from"./index-DA_85Pj5.js";var u=n.useId||(()=>{}),c=0;function x(t){const[e,o]=r.useState(u());return s(()=>{o(a=>a??String(c++))},[t]),t||(e?`radix-${e}`:"")}var i=r.createContext(void 0);function f(t){const e=r.useContext(i);return t||e||"ltr"}export{x as a,f as u};
