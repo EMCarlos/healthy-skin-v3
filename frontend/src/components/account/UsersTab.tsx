@@ -44,6 +44,7 @@ import { Users, UserCheck, UserX, Mail, Edit, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AuthUser } from "@/types";
+import { useUserAdminActions } from "@/hooks";
 
 type UsersTabProps = {
   users: AuthUser[];
@@ -51,41 +52,24 @@ type UsersTabProps = {
 
 type EditUserFormData = {
   name: string;
+  lastname?: string;
   email: string;
   isAdmin: boolean;
 };
 
 export const UsersTab = ({ users }: UsersTabProps) => {
+  const { deleteUserAsAdmin, updateUserAsAdmin } = useUserAdminActions();
   const [editingUser, setEditingUser] = useState<AuthUser | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const form = useForm<EditUserFormData>({
     defaultValues: {
       name: "",
+      lastname: "",
       email: "",
       isAdmin: false,
     },
   });
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "Active":
-        return (
-          <Badge
-            variant="default"
-            className="bg-green-100 text-green-800"
-          >
-            Active
-          </Badge>
-        );
-      case "Inactive":
-        return <Badge variant="secondary">Inactive</Badge>;
-      case "Suspended":
-        return <Badge variant="destructive">Suspended</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -109,6 +93,7 @@ export const UsersTab = ({ users }: UsersTabProps) => {
     setEditingUser(user);
     form.reset({
       name: user.name,
+      lastname: user.lastname || "",
       email: user.email,
       isAdmin: user.isAdmin,
     });
@@ -116,16 +101,12 @@ export const UsersTab = ({ users }: UsersTabProps) => {
   };
 
   const handleSaveUser = (data: EditUserFormData) => {
-    console.log("Saving user:", { ...data, userId: editingUser?.id });
-    // Here you would typically update the user in your backend
+    updateUserAsAdmin({ ...data, id: editingUser?.id });
     setIsEditDialogOpen(false);
     setEditingUser(null);
   };
 
-  const handleDeleteUser = (userId: number, userName: string) => {
-    console.log("Deleting user:", userId, userName);
-    // Here you would typically delete the user from your backend
-  };
+  const handleDeleteUser = (userId: number) => deleteUserAsAdmin(userId);
 
   return (
     <Card>
@@ -154,11 +135,12 @@ export const UsersTab = ({ users }: UsersTabProps) => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Last name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
               {/* <TableHead>Status</TableHead> */}
               <TableHead>Join Date</TableHead>
-              {/* <TableHead>Last Login</TableHead> */}
+              <TableHead>Last Login</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -166,11 +148,17 @@ export const UsersTab = ({ users }: UsersTabProps) => {
             {users.map((user) => (
               <TableRow key={user.id}>
                 <TableCell className="font-medium">{user.name}</TableCell>
+                <TableCell className="font-medium">{user.lastname}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{getRoleBadge(user.isAdmin ? "Admin" : "Customer")}</TableCell>
                 {/* <TableCell>{getStatusBadge(user.status)}</TableCell> */}
-                <TableCell>{user.access}</TableCell>
-                {/* <TableCell>{user.lastLogin}</TableCell> */}
+                <TableCell>
+                  {" "}
+                  {user.date_joined ? new Date(user.date_joined).toLocaleDateString("es-ES") : "-"}
+                </TableCell>
+                <TableCell>
+                  {user.last_login ? new Date(user.last_login).toLocaleDateString("es-ES") : "-"}
+                </TableCell>
                 <TableCell className="flex gap-2">
                   <Button
                     variant="outline"
@@ -198,7 +186,7 @@ export const UsersTab = ({ users }: UsersTabProps) => {
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleDeleteUser(user.id, user.name)}
+                          onClick={() => handleDeleteUser(user.id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           Delete
@@ -237,6 +225,23 @@ export const UsersTab = ({ users }: UsersTabProps) => {
                       <FormControl>
                         <Input
                           placeholder="Enter user name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* Lastname */}
+                <FormField
+                  control={form.control}
+                  name="lastname"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter last name"
                           {...field}
                         />
                       </FormControl>
