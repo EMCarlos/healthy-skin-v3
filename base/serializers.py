@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'lastname', 'isAdmin']
+        fields = ['id', '_id', 'username', 'email', 'name', 'lastname', 'isAdmin', 'last_login', 'date_joined']
         read_only_fields = ['id', '_id', 'isAdmin']
 
     def get__id(self, obj):
