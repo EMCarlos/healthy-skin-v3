@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.http import JsonResponse
+from rest_framework.response import Response
 
 from base.models import Order, OrderItem, Product, ShippingAddress
 from base.serializers import OrderSerializer, ProductSerializer
@@ -19,7 +20,7 @@ def addOrderItems(request):
     orderItems = data['orderItems']
 
     if orderItems and len(orderItems) == 0:
-        return JsonResponse({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
     else:
 
         # (1) Create order
@@ -74,7 +75,7 @@ def getMyOrders(request):
     user = request.user
     orders = user.order_set.all()
     serializer = OrderSerializer(orders, many=True)
-    return JsonResponse(serializer.data)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -82,7 +83,7 @@ def getMyOrders(request):
 def getOrders(request):
     orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
-    return JsonResponse(serializer.data)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -95,14 +96,14 @@ def getOrderById(request, pk):
         order = Order.objects.get(_id=pk)
         if user.is_staff or order.user == user:
             serializer = OrderSerializer(order, many=False)
-            return JsonResponse(serializer.data)
+            return Response(serializer.data)
         else:
-            JsonResponse({'detail': 'Not authorized to view this order'},
+            Response({'detail': 'Not authorized to view this order'},
                      status=status.HTTP_400_BAD_REQUEST)
     except Order.DoesNotExist:
-        return JsonResponse({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return JsonResponse({'detail': f'Error retrieving order: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': f'Error retrieving order: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
@@ -114,7 +115,7 @@ def updateOrderToPaid(request, pk):
     order.paidAt = datetime.now()
     order.save()
 
-    return JsonResponse('Order was paid')
+    return Response('Order was paid')
 
 
 @api_view(['PUT'])
@@ -126,4 +127,4 @@ def updateOrderToDelivered(request, pk):
     order.deliveredAt = datetime.now()
     order.save()
 
-    return JsonResponse('Order was delivered')
+    return Response('Order was delivered')
