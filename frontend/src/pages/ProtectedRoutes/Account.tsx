@@ -3,6 +3,7 @@ import { ProductsTab } from "@/components/account/ProductsTab";
 import { ProfileTab } from "@/components/account/ProfileTab";
 import Navbar from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useGetProductList from "@/hooks/useGetProductList";
 import useGeneralStore from "@/store";
 import { Clock, Package, Shield, User } from "lucide-react";
 
@@ -65,6 +66,7 @@ const products = [
 
 const Account = () => {
   const { userLogged } = useGeneralStore();
+  const { isLoading, products = [] } = useGetProductList();
   const isAdmin = userLogged?.isAdmin;
 
   return (
