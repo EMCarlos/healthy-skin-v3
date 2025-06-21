@@ -6,7 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import useGetProductList from "@/hooks/useGetProductList";
-import useGeneralStore from "@/store";
+import useGeneralStore, { useProduct } from "@/store";
+import { parseImageUrl } from "@/utils";
 import { ArrowLeft, Heart, ShoppingCart, Star } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -24,8 +25,14 @@ const reviews: Array<{
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
-  const { isLoading, products } = useGetProductList();
-  const product = products.find((p) => p._id === Number(productId));
+  const { product: response, isLoading } = useProduct(Number(productId ?? 0));
+  const product = useMemo(() => {
+    if (!response) return null;
+    return {
+      ...response,
+      image: parseImageUrl(response.image),
+    };
+  }, [response]);
   const { addToFavorites, removeFromFavorites, isFavorite, addToCart } = useGeneralStore();
   const inStock = useMemo(() => (product?.countInStock ?? 0) > 0, [product?.countInStock]);
 
