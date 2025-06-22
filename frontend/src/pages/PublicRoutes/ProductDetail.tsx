@@ -5,8 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useProduct } from "@/hooks";
-import useGetProductList from "@/hooks/useGetProductList";
+import { useProduct, useProductReview } from "@/hooks";
 import useGeneralStore from "@/store";
 import { parseImageUrl } from "@/utils";
 import { ArrowLeft, Heart, ShoppingCart, Star } from "lucide-react";
@@ -27,6 +26,8 @@ const reviews: Array<{
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const { product: response, isLoading } = useProduct(Number(productId ?? 0));
+  const { addToFavorites, removeFromFavorites, isFavorite, addToCart } = useGeneralStore();
+  const { createReview, isSubmittingReview } = useProductReview();
   const product = useMemo(() => {
     if (!response) return null;
     return {
@@ -34,13 +35,49 @@ const ProductDetail = () => {
       image: parseImageUrl(response.image),
     };
   }, [response]);
-  const { addToFavorites, removeFromFavorites, isFavorite, addToCart } = useGeneralStore();
   const inStock = useMemo(() => (product?.countInStock ?? 0) > 0, [product?.countInStock]);
 
   const [quantity, setQuantity] = useState(1);
   const [reviewName, setReviewName] = useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
+
+  const isProductFavorite = isFavorite(product?._id);
+  const productReviews = product?.reviews;
+  const finalPrice = product?.discount
+    ? Number(product?.price ?? 0) * (1 - Number(product?.discount ?? 0) / 100)
+    : Number(product?.price ?? 0);
+
+  const handleFavoriteClick = () => {
+    if (isProductFavorite) {
+      removeFromFavorites(product?._id);
+    } else {
+      addToFavorites({
+        _id: product?._id,
+        name: product?.name,
+        price: product?.price,
+        image: product?.image,
+        rating: product?.rating ?? "0",
+        category: product?.category,
+      });
+    }
+  };
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    if (!product?._id) return;
+    if (isSubmittingReview) return; // Prevent multiple submissions
+
+    e.preventDefault();
+
+    createReview(product?._id, {
+      rating: reviewRating,
+      comment: reviewComment,
+    });
+    // Reset form
+    setReviewName("");
+    setReviewComment("");
+    setReviewRating(5);
+  };
 
   if (!isLoading && !product) {
     return (
@@ -62,43 +99,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  const isProductFavorite = isFavorite(product?._id);
-  const productReviews = reviews.filter((review) => review.productId === product?._id);
-  const finalPrice = product?.discount
-    ? Number(product?.price ?? 0) * (1 - Number(product?.discount ?? 0) / 100)
-    : Number(product?.price ?? 0);
-
-  const handleFavoriteClick = () => {
-    if (isProductFavorite) {
-      removeFromFavorites(product?._id);
-    } else {
-      addToFavorites({
-        _id: product?._id,
-        name: product?.name,
-        price: product?.price,
-        image: product?.image,
-        rating: product?.rating ?? "0",
-        category: product?.category,
-      });
-    }
-  };
-
-  const handleSubmitReview = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real application, this would send the review to a backend
-    console.log("Review submitted:", {
-      name: reviewName,
-      rating: reviewRating,
-      comment: reviewComment,
-    });
-    // Reset form
-    setReviewName("");
-    setReviewComment("");
-    setReviewRating(5);
-    // Show success message (in a real app, you'd use a toast notification)
-    alert("Thank you for your review! It will appear after moderation.");
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -286,7 +286,7 @@ const ProductDetail = () => {
 
               {/* Reviews List */}
               <div className="space-y-6">
-                {productReviews.length === 0 ? (
+                {productReviews?.length === 0 ? (
                   <Card className="p-8 text-center">
                     <div className="mb-4">
                       <Star className="h-12 w-12 mx-auto text-gray-300" />
@@ -298,7 +298,7 @@ const ProductDetail = () => {
                     </p>
                   </Card>
                 ) : (
-                  productReviews.map((review) => (
+                  productReviews?.map((review) => (
                     <div
                       key={review.id}
                       className="border-b pb-6"
