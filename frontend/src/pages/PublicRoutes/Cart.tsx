@@ -31,7 +31,7 @@ const Cart = () => {
                 {cartItems.map((item) => (
                   <Card
                     key={item._id}
-                    className="overflow-h_idden"
+                    className="overflow-hidden"
                   >
                     <CardContent className="p-4">
                       <div className="flex gap-4">
@@ -58,6 +58,10 @@ const Cart = () => {
                               </button>
                               <span className="px-3 py-1">{item.quantity}</span>
                               <button
+                                disabled={
+                                  !item.countInStock ||
+                                  (item.quantity ?? 0) >= (item.countInStock ?? 0)
+                                }
                                 onClick={() => updateQuantity(item._id, (item.quantity ?? 0) + 1)}
                                 className="px-3 py-1 hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
                               >

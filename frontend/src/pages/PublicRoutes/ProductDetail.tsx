@@ -187,6 +187,7 @@ const ProductDetail = () => {
                     size="icon"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="rounded-r-none"
+                    disabled={!inStock || isLoading || quantity <= 1}
                   >
                     -
                   </Button>
@@ -198,6 +199,7 @@ const ProductDetail = () => {
                     size="icon"
                     onClick={() => setQuantity(quantity + 1)}
                     className="rounded-l-none"
+                    disabled={!inStock || isLoading || quantity >= (product?.countInStock ?? 0)}
                   >
                     +
                   </Button>
@@ -216,6 +218,7 @@ const ProductDetail = () => {
                         image: product?.image,
                         rating: product?.rating ?? "0",
                         category: product?.category,
+                        countInStock: product?.countInStock ?? 0,
                         quantity,
                       });
                     }}
