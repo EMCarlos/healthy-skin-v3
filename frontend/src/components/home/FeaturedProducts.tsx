@@ -1,4 +1,4 @@
-import useGetProductList from "@/hooks/useGetProductList";
+import { useGetProductList } from "@/hooks";
 import { ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";

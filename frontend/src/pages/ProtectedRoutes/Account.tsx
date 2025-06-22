@@ -3,7 +3,7 @@ import { ProductsTab } from "@/components/account/ProductsTab";
 import { ProfileTab } from "@/components/account/ProfileTab";
 import Navbar from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useGetProductList from "@/hooks/useGetProductList";
+import { useGetProductList } from "@/hooks";
 import useGeneralStore from "@/store";
 import { User, Shield, Settings, Clock, Package, Users } from "lucide-react";
 import { UsersTab } from "@/components/account/UsersTab";

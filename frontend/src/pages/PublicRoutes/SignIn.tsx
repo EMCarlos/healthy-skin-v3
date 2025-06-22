@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import useLogin from "@/hooks/useLogin";
+import { useLogin } from "@/hooks";
 import useGeneralStore from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader, Lock, Mail } from "lucide-react";

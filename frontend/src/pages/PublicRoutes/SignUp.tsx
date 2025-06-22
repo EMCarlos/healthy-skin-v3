@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks";
 import { userApi } from "@/services/apiServices";
 import useGeneralStore from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -10,8 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useGetProductList from "@/hooks/useGetProductList";
-import useProductFilters from "@/hooks/useProductFilters";
+import { useGetProductList } from "@/hooks";
+import { useProductFilters } from "@/hooks";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 

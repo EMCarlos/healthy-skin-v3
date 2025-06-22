@@ -1,6 +1,6 @@
 import { productApi } from "@/services/apiServices";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "./use-toast";
+import { useToast } from "../ui";
 
 export const useProductCreate = () => {
   const queryClient = useQueryClient();

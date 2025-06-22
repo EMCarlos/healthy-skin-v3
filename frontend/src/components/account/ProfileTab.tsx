@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useUser, useUserUpdate } from "@/hooks";
-import { useToast } from "@/hooks/use-toast";
 import useGeneralStore from "@/store";
 import { useEffect, useState } from "react";
 
 export const ProfileTab = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",

@@ -1,6 +1,6 @@
 import { ordersApi } from "@/services/apiServices";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "./use-toast";
+import { useToast } from "../ui";
 import { CartItem } from "@/types";
 
 export const useOrderCreate = () => {
