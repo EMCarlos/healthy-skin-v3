@@ -18,7 +18,7 @@ export const useProductUpdate = () => {
       // Update the specific product in cache
       queryClient.setQueryData(["product", data._id], data);
       // Invalidate products list to ensure consistency
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products-list"] });
       queryClient.invalidateQueries({ queryKey: ["featuredProducts"] });
     },
     onError: (error: any) => {
