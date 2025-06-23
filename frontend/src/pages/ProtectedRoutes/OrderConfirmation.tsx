@@ -143,7 +143,9 @@ const OrderConfirmation = () => {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span>
                   $
-                  {Number(orderDetails?.totalPrice ?? 0) - Number(orderDetails?.shippingPrice ?? 0)}
+                  {(
+                    Number(orderDetails?.totalPrice ?? 0) - Number(orderDetails?.shippingPrice ?? 0)
+                  ).toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between text-sm">

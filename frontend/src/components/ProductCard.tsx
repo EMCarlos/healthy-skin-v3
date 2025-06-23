@@ -37,7 +37,7 @@ const ProductCard = ({
     if (isProductFavorite) {
       removeFromFavorites(_id);
     } else {
-      addToFavorites({ _id, name, price, image, rating, category });
+      addToFavorites({ _id, name, price, image, rating, category, brand, countInStock });
     }
   };
 
@@ -104,7 +104,17 @@ const ProductCard = ({
           onClick={(e) => {
             e.preventDefault();
             if (isOutOfStock) return;
-            addToCart({ product: _id, _id, name, price, image, rating, category, quantity: 1 });
+            addToCart({
+              product: _id,
+              _id,
+              name,
+              price,
+              image,
+              rating,
+              category,
+              quantity: 1,
+              countInStock: countInStock ?? 0,
+            });
           }}
         >
           <ShoppingCart className="h-4 w-4" />

@@ -59,6 +59,8 @@ const ProductDetail = () => {
         image: product?.image,
         rating: product?.rating ?? "0",
         category: product?.category,
+        brand: product?.brand,
+        countInStock: product?.countInStock ?? 0,
       });
     }
   };

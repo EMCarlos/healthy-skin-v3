@@ -41,7 +41,8 @@ const Cart = () => {
                           className="w-32 h-32 object-contain rounded border-purple shadow-md hover:shadow-lg transition-shadow duration-300"
                         />
                         <div className="flex-1">
-                          ${Number(item.price ?? 0).toFixed(2)} each
+                          <h3 className="text-lg font-semibold flex-1">{item.name}</h3>$
+                          {(Number(item.price ?? 0) * (item.quantity ?? 1)).toFixed(2)}
                           <div className="text-sm text-muted-foreground mt-1">
                             ${Number(item.price ?? 0).toFixed(2)} each
                           </div>
