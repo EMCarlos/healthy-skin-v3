@@ -6,6 +6,10 @@ import useGeneralStore from "@/store";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 
+const BANK_NAME = import.meta.env.VITE_BANK_NAME;
+const BANK_ACCOUNT_NUMBER = import.meta.env.VITE_BANK_ACCOUNT_NUMBER;
+const BANK_ACCOUNT_NAME = import.meta.env.VITE_BANK_ACCOUNT_NAME;
+
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
   const id = Number(searchParams.get("id") ?? "");
@@ -105,13 +109,13 @@ const OrderConfirmation = () => {
                 <div className="text-sm">
                   <div className="grid grid-cols-2 gap-1">
                     <span className="font-medium">Bank:</span>
-                    <span>Bank of Example</span>
+                    <span>{BANK_NAME}</span>
                     <span className="font-medium">Account Name:</span>
-                    <span>The Ordinary Shop</span>
+                    <span>{BANK_ACCOUNT_NAME}</span>
                     <span className="font-medium">Account Number:</span>
-                    <span>12345678</span>
+                    <span>{BANK_ACCOUNT_NUMBER}</span>
                     <span className="font-medium">Reference:</span>
-                    <span>{orderDetails?.id}</span>
+                    <span>{orderName}</span>
                   </div>
                 </div>
               </div>

@@ -28,13 +28,11 @@ export const ProductsTab = ({ products }: ProductsTabProps) => {
   const { deleteProduct, isDeleting } = useProductDelete();
 
   const uploadFileHandler = async (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
     const formData = new FormData();
 
     formData.append("image", e.target.form.image.files[0]);
     formData.append("product_id", e.target.form.productId.value);
-    console.log(formData);
 
     setUploading(true);
 
