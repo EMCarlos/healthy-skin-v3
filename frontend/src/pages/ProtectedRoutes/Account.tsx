@@ -8,14 +8,25 @@ import useGeneralStore from "@/store";
 import { User, Shield, Settings, Clock, Package, Users } from "lucide-react";
 import { UsersTab } from "@/components/account/UsersTab";
 import { useMyOrders, useOrderHistory, useUsersList } from "@/hooks";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 
 const Account = () => {
   const { userLogged } = useGeneralStore();
+  const [searchParams] = useSearchParams();
+  const tab = useMemo(() => searchParams.get("tab") || "profile", [searchParams]);
+
   const { isLoading, products = [] } = useGetProductList();
   const { usersList, isLoadingUsersList } = useUsersList();
   const { orderHistory, isLoadingOrders } = useOrderHistory();
   const { myOrders, isLoadingMyOrders } = useMyOrders();
   const isAdmin = userLogged?.isAdmin;
+
+  const onTabClick = (value: string) => {
+    searchParams.set("tab", value);
+    window.history.replaceState({}, "", `?${searchParams.toString()}`);
+  };
+  console.log(tab);
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,36 +38,49 @@ const Account = () => {
         </div>
 
         <Tabs
-          defaultValue="profile"
-          className="space-y-4 overflow-hidden w-full"
+          // className="space-y-4 overflow-hidden w-full"
+          defaultValue={tab}
         >
           <TabsList>
-            <TabsTrigger value="profile">
+            <TabsTrigger
+              value="profile"
+              onClick={() => onTabClick("profile")}
+            >
               <User className="h-4 w-4 mr-2" />
               Profile
             </TabsTrigger>
-            <TabsTrigger value="orders">
+            <TabsTrigger
+              value="orders"
+              onClick={() => onTabClick("orders")}
+            >
               <Clock className="h-4 w-4 mr-2" />
               Orders
             </TabsTrigger>
             {/* //TODO */}
-            {/* <TabsTrigger value="settings">
+            {/* <TabsTrigger value="settings" }>
               <Settings className="h-4 w-4 mr-2" />
               Settings
             </TabsTrigger> */}
-
-            {/* Only show admin tab if user is admin */}
             {isAdmin && (
               <>
-                <TabsTrigger value="admin">
+                <TabsTrigger
+                  value="admin"
+                  onClick={() => onTabClick("admin")}
+                >
                   <Shield className="h-4 w-4 mr-2" />
                   Admin
                 </TabsTrigger>
-                <TabsTrigger value="products">
+                <TabsTrigger
+                  value="products"
+                  onClick={() => onTabClick("products")}
+                >
                   <Package className="h-4 w-4 mr-2" />
                   Products
                 </TabsTrigger>
-                <TabsTrigger value="users">
+                <TabsTrigger
+                  value="users"
+                  onClick={() => onTabClick("users")}
+                >
                   <Users className="h-4 w-4 mr-2" />
                   Users
                 </TabsTrigger>
@@ -64,25 +88,38 @@ const Account = () => {
             )}
           </TabsList>
 
-          <TabsContent value="profile">
+          <TabsContent
+            value="profile"
+            // hidden={tab !== "profile"}
+          >
             <ProfileTab />
           </TabsContent>
 
-          <TabsContent value="orders">
-            <OrdersTab orders={myOrders} />
+          <TabsContent
+            value="orders"
+            // hidden={tab !== "orders"}
+          >
+            <OrdersTab
+              orders={myOrders}
+              loading={isLoadingMyOrders}
+            />
           </TabsContent>
 
           {/* //TODO: Next */}
-          {/* <TabsContent value="settings">
+          {/* <TabsContent value="settings"  hidden={tab !== "settings"}> 
             <SettingsTab />
           </TabsContent> */}
 
           {isAdmin && (
             <>
-              <TabsContent value="admin">
+              <TabsContent
+                value="admin"
+                // hidden={tab !== "admin"}
+              >
                 <OrdersTab
                   orders={orderHistory}
                   showCustomer={true}
+                  loading={isLoadingOrders}
                 />
               </TabsContent>
 
