@@ -104,7 +104,7 @@ const ProductCard = ({
           onClick={(e) => {
             e.preventDefault();
             if (isOutOfStock) return;
-            addToCart({ _id, name, price, image, rating, category, quantity: 1 });
+            addToCart({ product: _id, _id, name, price, image, rating, category, quantity: 1 });
           }}
         >
           <ShoppingCart className="h-4 w-4" />
