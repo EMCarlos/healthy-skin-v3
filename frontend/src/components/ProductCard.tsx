@@ -70,6 +70,7 @@ const ProductCard = ({
       <button
         className="absolute top-3 right-3 z-10 p-1.5 bg-white rounded-full shadow-sm transition-all duration-300 hover:bg-beige"
         onClick={handleFavoriteClick}
+        disabled={isOutOfStock || isLoading}
       >
         <Heart
           className={`h-5 w-5 ${isProductFavorite ? "fill-purple text-purple" : "text-gray-400"}`}
