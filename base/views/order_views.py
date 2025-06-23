@@ -66,7 +66,7 @@ def addOrderItems(request):
             product.save()
 
         serializer = OrderSerializer(order, many=False)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
 
 @api_view(['GET'])
