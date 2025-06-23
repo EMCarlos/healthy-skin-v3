@@ -40,6 +40,7 @@ export const useOrderCreate = () => {
             : error.message,
         variant: "destructive",
       });
+      navigate("/cart", { replace: true });
     },
   });
 
