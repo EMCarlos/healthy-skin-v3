@@ -7,7 +7,7 @@ export const useOrderPayment = () => {
   const { toast } = useToast();
 
   const payOrderMutation = useMutation({
-    mutationFn: ({ orderId, paymentResult }: { orderId: number; paymentResult: any }) =>
+    mutationFn: ({ orderId, paymentResult }: { orderId: number; paymentResult?: any }) =>
       ordersApi.payOrder(orderId, paymentResult),
     onSuccess: (data, { orderId }) => {
       toast({
@@ -15,9 +15,8 @@ export const useOrderPayment = () => {
         description: "Your payment has been processed successfully.",
         variant: "default",
       });
-      // Update the specific order details
-      queryClient.setQueryData(["orderDetails", orderId], data);
       // Invalidate order lists to reflect payment status
+      queryClient.invalidateQueries({ queryKey: ["orderDetails"] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       queryClient.invalidateQueries({ queryKey: ["myOrders"] });
     },
@@ -34,7 +33,7 @@ export const useOrderPayment = () => {
   });
 
   return {
-    payOrder: (orderId: number, paymentResult: any) =>
+    payOrder: (orderId: number, paymentResult?: any) =>
       payOrderMutation.mutate({ orderId, paymentResult }),
     isProcessingPayment: payOrderMutation.isPending,
     paymentError: payOrderMutation.error,

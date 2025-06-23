@@ -14,9 +14,8 @@ export const useOrderDelivery = () => {
         description: "The order has been marked as delivered successfully.",
         variant: "default",
       });
-      // Update the specific order details
-      queryClient.setQueryData(["orderDetails", orderId], data);
-      // Invalidate order lists to reflect delivery status
+      // Invalidate order lists to reflect payment status
+      queryClient.invalidateQueries({ queryKey: ["orderDetails"] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       queryClient.invalidateQueries({ queryKey: ["myOrders"] });
     },
