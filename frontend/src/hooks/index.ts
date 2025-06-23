@@ -13,5 +13,5 @@ export * from "./order";
 // UI hooks
 export * from "./ui";
 
-// Legacy hooks (for backward compatibility)
+// Initial hooks (for backward compatibility)
 export { useUser, useCheckout } from "./useQueries";
