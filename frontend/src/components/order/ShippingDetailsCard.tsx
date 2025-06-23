@@ -23,7 +23,7 @@ export const ShippingDetailsCard = ({ shipping }: ShippingDetailsCardProps) => {
           <p>{shipping.address || "Address not provided"}</p>
           <p>{shipping.city || "City not provided"}</p>
           <p>{shipping.postalCode || "Postal code not provided"}</p>
-          <p>{shipping.country || "Country not provided"}</p>
+          <p>{shipping.country || "Aruba"}</p>
           <p>Phone: {shipping.phone || "Phone number not provided"}</p>
         </div>
       </CardContent>

@@ -212,6 +212,7 @@ const ProductDetail = () => {
                       e.preventDefault();
                       if (!inStock) return;
                       addToCart({
+                        product: product?._id,
                         _id: product?._id,
                         name: product?.name,
                         price: product?.price,

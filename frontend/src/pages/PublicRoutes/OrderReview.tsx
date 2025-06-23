@@ -3,6 +3,7 @@ import { OrderSummaryCard } from "@/components/order/OrderSummaryCard";
 import { PaymentMethodCard } from "@/components/order/PaymentMethodCard";
 import { ShippingDetailsCard } from "@/components/order/ShippingDetailsCard";
 import { Button } from "@/components/ui/button";
+import { useOrderCreate } from "@/hooks";
 import useGeneralStore from "@/store";
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ const OrderReview = () => {
   const navigate = useNavigate();
   const cartItems = useGeneralStore((state) => state.cartItems);
   const checkoutForm = useGeneralStore((state) => state.checkoutForm);
+  const { createOrder, isCreatingOrder } = useOrderCreate();
 
   const orderItems = useMemo(() => {
     return cartItems.map((item) => {
@@ -65,6 +67,26 @@ const OrderReview = () => {
 
   const handleConfirmOrder = () => {
     navigate("/order-confirmation");
+
+    createOrder({
+      orderItems: cartItems.map((item) => ({
+        product: item._id,
+        qty: item.quantity ?? 1,
+        price: item.price ?? "0",
+      })),
+      shippingAddress: {
+        ...orderDetails.shippingDetails,
+        messageFrom: orderDetails.giftMessage?.from ?? "",
+        messageFor: orderDetails.giftMessage?.to ?? "",
+        message: orderDetails.giftMessage?.message ?? "",
+      },
+      paymentMethod: orderDetails.paymentMethod ?? "bank",
+      itemsPrice: orderDetails.subtotal,
+      shippingPrice: orderDetails.shippingCost,
+      giftPrice: orderDetails.giftMessage ? 0 : 0,
+      taxPrice: 0,
+      totalPrice: orderDetails.subtotal + orderDetails.shippingCost,
+    });
   };
 
   if (!cartItems.length && !checkoutForm?.phone) navigate("/cart");
@@ -94,7 +116,12 @@ const OrderReview = () => {
             <Link to="/checkout">
               <Button variant="outline">Back to Checkout</Button>
             </Link>
-            <Button onClick={handleConfirmOrder}>Confirm Order</Button>
+            <Button
+              disabled={isCreatingOrder}
+              onClick={handleConfirmOrder}
+            >
+              Confirm Order
+            </Button>
           </div>
         </div>
       </div>

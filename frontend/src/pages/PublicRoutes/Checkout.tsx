@@ -81,7 +81,7 @@ const Checkout = () => {
     setCheckoutForm({
       ...form,
       isGift,
-      paymentMethod: paymentMethod ?? "bank",
+      paymentMethod: form.paymentMethod ?? "bank",
     });
     navigate("/order-review");
   };
@@ -101,6 +101,7 @@ const Checkout = () => {
         giftFrom: giftFrom ?? prev.giftFrom,
         giftTo: giftTo ?? prev.giftTo,
         giftMessage: giftMessage ?? prev.giftMessage,
+        paymentMethod: paymentMethod ?? prev.paymentMethod,
       }));
     }
     setIsGift(!!storeIsGift);
@@ -118,6 +119,17 @@ const Checkout = () => {
     giftMessage,
     storeIsGift,
   ]);
+
+  useEffect(() => {
+    if (!isGift) {
+      setForm((prev) => ({
+        ...prev,
+        giftFrom: "",
+        giftTo: "",
+        giftMessage: "",
+      }));
+    }
+  }, [isGift]);
 
   if (!cartItems.length) {
     return (
@@ -221,15 +233,19 @@ const Checkout = () => {
                         onChange={handleInputChange}
                       />
                     </div>
+                    {/* //TODO: For future expansion */}
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="country">Country</Label>
                       <Select
-                        defaultValue={"usa"}
+                        defaultValue={"aw"}
                         value={form.country}
                         onValueChange={handleCountryChange}
                       >
                         <SelectTrigger id="country">
-                          <SelectValue placeholder="Select country" />
+                          <SelectValue
+                            placeholder="Select country"
+                            defaultValue="aw"
+                          />
                         </SelectTrigger>
                         <SelectContent position="popper">
                           <SelectItem
@@ -239,7 +255,7 @@ const Checkout = () => {
                           >
                             Aruba
                           </SelectItem>
-                          <SelectItem
+                          {/* <SelectItem
                             value="United States"
                             country="us"
                             className="flex items-center gap-x-1"
@@ -266,7 +282,7 @@ const Checkout = () => {
                             className="flex items-center gap-x-1"
                           >
                             Australia
-                          </SelectItem>
+                          </SelectItem> */}
                         </SelectContent>
                       </Select>
                     </div>

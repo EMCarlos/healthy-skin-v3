@@ -33,14 +33,52 @@ export type Product = {
 };
 
 export interface Order {
-  id: string;
+  _id: string;
   date: string;
-  total: number;
+  totalPrice: number;
+  isDelivered: boolean;
+  isPaid: boolean;
+  orderItems: CartItem[];
+  createdAt: string;
   status: string;
   paymentStatus: string;
   customer?: string;
+  user: {
+    id: number;
+    _id: number;
+    username: string;
+    email: string;
+    name: string;
+    lastname: string;
+    isAdmin: boolean;
+    last_login: string | null;
+    date_joined: string;
+  };
 }
 
 export type CartItem = Product & {
+  product?: number;
   quantity?: number;
+};
+
+export type CustomerOrder = {
+  orderItems: CartItem[];
+  shippingAddress: {
+    name?: string;
+    email?: string;
+    address?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
+    phone?: string;
+    messageFrom?: string;
+    messageFor?: string;
+    message?: string;
+  };
+  paymentMethod: string;
+  itemsPrice: number;
+  shippingPrice: number;
+  giftPrice: number;
+  taxPrice: number;
+  totalPrice: number;
 };
