@@ -20,7 +20,7 @@ def addOrderItems(request):
     orderItems = data['orderItems']
 
     if orderItems and len(orderItems) == 0:
-        return Response({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
     else:
 
         # (1) Create order
