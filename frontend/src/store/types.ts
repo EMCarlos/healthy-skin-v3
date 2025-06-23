@@ -46,7 +46,7 @@ export interface CheckoutForm {
 
 export interface CheckoutType {
   checkoutForm: CheckoutForm | null;
-  setCheckoutForm: (form: CheckoutForm) => void;
+  setCheckoutForm: (form: CheckoutType["checkoutForm"]) => void;
 }
 
 export type GeneralStore = userType & favoritesType & CartType & CheckoutType;
