@@ -26,7 +26,6 @@ const Account = () => {
     searchParams.set("tab", value);
     window.history.replaceState({}, "", `?${searchParams.toString()}`);
   };
-  console.log(tab);
 
   return (
     <div className="min-h-screen bg-background">
