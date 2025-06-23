@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 import { CheckoutForm } from "@/store/types";
-import { AuthUser, CartItem, Product } from "@/types";
+import { AuthUser, CartItem, CustomerOrder, Product } from "@/types";
 import useGeneralStore from "@/store";
 
 // User API services
@@ -86,13 +86,8 @@ export const productApi = {
 
 // Checkout API services
 export const ordersApi = {
-  createOrders: async (cartItems: CartItem[]): Promise<any> => {
-    const { data } = await axios.post("/api/orders/add/", { cartItems });
-    return data;
-  },
-
-  submitOrder: async (checkoutData: CheckoutForm): Promise<any> => {
-    const { data } = await axios.post("/api/orders/", checkoutData);
+  createOrders: async (order: CustomerOrder): Promise<any> => {
+    const { data } = await axios.post("/api/orders/add/", { ...order });
     return data;
   },
 
@@ -111,7 +106,7 @@ export const ordersApi = {
     return data;
   },
 
-  payOrder: async (orderId: number, paymentResult: any): Promise<any> => {
+  payOrder: async (orderId: number, paymentResult?: any): Promise<any> => {
     const { data } = await axios.put(`/api/orders/${orderId}/pay/`, paymentResult);
     return data;
   },

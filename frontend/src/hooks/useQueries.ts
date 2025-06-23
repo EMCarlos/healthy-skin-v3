@@ -1,6 +1,4 @@
 import { ordersApi, userApi, productApi } from "@/services/apiServices";
-import { CartItem } from "@/types";
-import { parseImageUrl } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // User query hooks
@@ -58,18 +56,6 @@ export const useProduct = (id: number | undefined) => {
 
 // Checkout query hooks
 export const useCheckout = () => {
-  const queryClient = useQueryClient();
-
-  const submitOrderMutation = useMutation({
-    mutationFn: ordersApi.submitOrder,
-    onSuccess: () => {
-      // After successful checkout, clear cart
-      queryClient.setQueryData(["cart"], []);
-      // Invalidate order history if it exists
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-  });
-
   const {
     data: orderHistory = [],
     isLoading,
@@ -81,9 +67,6 @@ export const useCheckout = () => {
   });
 
   return {
-    submitOrder: submitOrderMutation.mutate,
-    isSubmitting: submitOrderMutation.isPending,
-    submitError: submitOrderMutation.error,
     orderHistory,
     isLoadingOrders: isLoading,
     ordersError: error,
