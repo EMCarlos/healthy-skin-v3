@@ -1,5 +1,6 @@
 import axios from "@/lib/axios";
 import useGeneralStore from "@/store";
+import { AxiosHeaders } from "axios";
 import { useState } from "react";
 
 const useLogin = () => {
@@ -19,11 +20,15 @@ const useLogin = () => {
 
       const { data } = await axios.post("/api/users/login/", { username: email, password }, config);
 
-      setUserLogged(data);
+      axios.interceptors.request.use((config) => {
+        if (data?.token) {
+          config.headers["Authorization"] = `Bearer ${data.token}`;
+        }
+        return config;
+      });
 
-      setTimeout(() => {
-        setIsLogged(true);
-      }, 500);
+      setUserLogged(data);
+      setIsLogged(true);
     } catch (err: any) {
       setError(err.response && err.response.data.detail ? err.response.data.detail : err.message);
     } finally {
