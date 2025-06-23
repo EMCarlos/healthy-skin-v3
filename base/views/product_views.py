@@ -76,7 +76,8 @@ def createProduct(request):
         brand='Sample Brand',
         countInStock=0,
         category='Sample Category',
-        description=''
+        description='',
+        image='sample_image.jpg',  # Placeholder image
     )
 
     serializer = ProductSerializer(product, many=False)

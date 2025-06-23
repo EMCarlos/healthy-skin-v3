@@ -97,7 +97,7 @@ export const ProductsTab = ({ products }: ProductsTabProps) => {
       name,
       price,
       discount,
-      image: image ?? "sample_image.jpg", // Default image if none uploaded
+      image,
       brand,
       size,
       about,
