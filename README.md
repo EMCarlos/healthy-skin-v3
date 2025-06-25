@@ -2,10 +2,6 @@
 
 A modern e-commerce platform built with Django and Supabase, designed for skincare products.
 
-## Project Status
-
-This is a private repository maintained by Healthy Skin, a private company. This codebase contains proprietary information and is not intended for public distribution.
-
 ## Features
 
 - Product management system
@@ -105,18 +101,6 @@ healthy-skin-v3/
 ├── requirements.txt  # Python dependencies
 └── .env             # Environment variables
 ```
-
-## API Documentation
-
-The API documentation is available at `/api/docs/` when running the development server.
-
-## Development Guidelines
-
-This repository is for internal use only. All development work should be done in feature branches and reviewed by the team before merging into the main branch.
-
-## License
-
-This project is proprietary software owned by Healthy Skin. All rights reserved.
 
 ## Contact
 
